@@ -1,0 +1,50 @@
+@import "src/styles/variables.scss";
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+body {
+    background-color: #f9f9f9;
+
+    &.--modal-active {
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+}
+
+#app {
+    font-family: 'Roboto', sans-serif;
+}
+
+::placeholder {
+    color: $color-text-dark-normal;
+}
+
+button[type="button"] {
+    cursor: pointer;
+}
+
+h1 {
+    font-size: 1.65rem;
+    margin: 1.7em 0;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+h2 {
+    font-size: 1.2rem;
+    margin: 0.7em 0;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    text-transform: uppercase;
+}

@@ -1,0 +1,119 @@
+@import "src/styles/variables.scss";
+
+$hover-transition-style: 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+.card-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.card {
+    position: relative;
+    height: 0;
+    padding-top: 73.74%; //ratio
+    margin: 15px;
+    overflow: hidden;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+
+    transition: margin-top $hover-transition-style, box-shadow 0.3s ease;
+
+    &:hover {
+        margin-top: 6px;
+        box-shadow: 0 1px 16px rgba(0, 0, 0, 0.15);
+
+        .card-details {
+            height: 41%;
+        }
+    }
+
+    &.--action {
+        box-shadow: none;
+
+        &:hover { //ignore default hover
+            margin-top: 15px;
+        }
+    }
+}
+
+.card-image, .card-action {
+    height: 100%;
+    width: 100%;
+}
+
+.card-image {
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.card-details {
+    position: absolute;
+    height: 27%;
+    width: 100%;
+    bottom: 0;
+    padding: 0 10%;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    transition: height $hover-transition-style;
+}
+
+.card-name {
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: $color-text-dark-strong;
+}
+
+.card-description {
+    margin-top: 0.25em;
+    font-size: 1.11rem;
+    letter-spacing: 0.05em;
+    color: $color-text-dark-normal;
+
+    overflow: hidden;
+    transition: max-height $hover-transition-style;
+}
+
+.card-action {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    border: 3px solid $color-text-dark-faded;
+    box-sizing: border-box;
+    cursor: pointer;
+    user-select: none;
+
+    color: $color-text-dark-normal;
+    fill: $color-text-dark-normal;
+
+    transition: background-color $hover-transition-style;
+
+    &:hover {
+        background-color: $color-text-dark-faded;
+    }
+}
+
+.card-action-icon {
+    width: 40px;
+}
+
+.card-action-name {
+    @extend .card-name;
+
+    color: $color-text-dark-normal;
+    margin-top: 0.95em;
+}

@@ -1,0 +1,5 @@
+/*
+
+   tu bolo by dobre asi vypisat backgrund api load errory a tak
+
+*/

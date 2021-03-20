@@ -1,0 +1,23 @@
+@import "src/styles/variables.scss";
+
+.modal-add-category {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 3px solid $color-text-dark-faded;
+
+    .input-error-container {
+        height: 100%;
+        width: auto;
+        box-sizing: border-box;
+        align-self: flex-end;
+
+        overflow: hidden;
+        transition: max-height 0.4s ease-in-out;
+    }
+
+    .input-error {
+        box-sizing: border-box;
+        padding: 0;
+        padding: 0.16em 0.4em 0.6em;
+    }
+}
