@@ -5,33 +5,30 @@
     display: flex;
     justify-content: space-between;
     padding: 0.57em 0;
+
+    > * {
+        flex-grow: 1;
+    }
+
+    .--no-grow {
+        flex-grow: 0;
+    }
 }
 
 .input-container {
-    flex-grow: 1;
     position: relative;
     display: inline-flex;
     align-items: center;
+    font-size: 1rem;
 
-    &.--no-grow {
-        flex-grow: 0;
-    }
-
-    * {
+    > * {
         width: 100%;
     }
 }
 
-.input-label {
-    color: $color-text-dark-strong;
-    font-size: 1.11rem;
-    letter-spacing: 0.07em;
-    font-weight: 500;
-    text-transform: uppercase;
-}
-
 .input-text {
-    @extend .input-label;
+    @include text-style-normal;
+    margin: 0;
 
     padding: 1em 3em 1em 0;
     border: none;
@@ -39,7 +36,8 @@
 }
 
 .input-button {
-    @extend .input-label;
+    @include text-style-normal;
+    margin: 0;
 
     display: flex;
     align-items: center;
@@ -47,29 +45,169 @@
 
     outline: none;
     border: none;
-    padding: 1em 1.5em;
+    padding: 0.95em 1.5em;
     border-radius: 0.3em;
     background-color: $input-accent;
-    cursor: pointer;
 
     fill: white;
+    color: white;
 
-    .input-label {
-        color: white;
+    &.--outline {
+        color: $input-accent;
+        fill: $input-accent;
+        background-color: $color-bg-light-strong;
+        padding: 0.8em 1.3em;
+        border: 3px solid $input-accent;
+    }
+
+    &.--grey {
+        color: $color-text-dark-normal;
+        fill: $color-text-dark-normal;
+        border-color: $color-text-dark-normal;
+    }
+}
+
+.input-dragndrop {
+    position: relative;
+    padding: 2.92rem;
+    border: 3px dashed $color-text-dark-faded; //pre presnejsie dodrzanie navrhu by to chcelo border-image, ale toto je podla mna "better practice" v tomto pripade
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 0.3rem;
+
+    color: $color-text-dark-normal;
+    fill: $color-text-dark-normal;
+    font-size: 1rem;
+
+    transition: background-color $hover-transition-style, transform $hover-transition-style;
+
+    &.--dragging {
+        background-color: $color-text-dark-faded;
+        transform: scale(1.05);
+    }
+
+    .input-dragndrop-asker {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        .icon {
+            width: 3.3em;
+        }
+
+        > .input-label {
+            margin-top: 0.9em;
+            font-weight: 700;
+            text-align: center;
+
+            span {
+                display: inline-block;
+                margin: 0.4em 0;
+                font-weight: 400;
+                text-transform: none;
+            }
+        }
+
+        .input-button {
+            padding-left: 2em;
+            padding-right: 2em;
+            background-color: transparent;
+        }
+    }
+
+    &.--preview {
+        .input-dragndrop-asker {
+            visibility: hidden;
+        }
+    }
+
+    .input-dragndrop-preview {
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 2.92em;
+
+        overflow-y: auto;
+        display: flex;
+
+        .input-dragndrop-preview-photo {
+            position: relative;
+            flex-basis: 33%;
+            flex-shrink: 0;
+            margin-right: 1em;
+            border-radius: 0.3em;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+
+            .lazy-image {
+                object-fit: cover;
+                user-select: none;
+            }
+
+            .input-dragndrop-preview-photo-description {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                padding: 0.5em;
+                box-sizing: border-box;
+                background-color: white;
+                @include text-style-small;
+                text-align: center;
+                max-height: 2.8em;
+                word-break: break-word;
+                word-wrap: break-word;
+                text-overflow: ellipsis;
+            }
+
+            .input-dragndrop-preview-photo-remove {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                opacity: 0;
+
+                @include text-style-normal;
+                margin: 0;
+                color: rgba(255, 0, 0, 0.6);
+                background-color: white;
+
+                transition: opacity $hover-transition-style;
+            }
+
+            &:hover {
+                .input-dragndrop-preview-photo-remove {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
+
+.input-file {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+.input-label {
+    @include text-style-normal;
+    margin: 0.1em 0 0;
+
+    &.--button {
+        @extend .input-button;
     }
 }
 
 .input-icon {
-    width: 1.25em;
-    margin: 0 0.2em;
-}
-
-.input-error {
-    width: 100%;
-    text-align: center;
-    color: rgba(255, 0, 0, 0.6);
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    font-size: 1.2em;
-    padding: 0.6em 0;
+    width: 0.88em;
+    margin: 0 0.5em 0 0.25em;
 }

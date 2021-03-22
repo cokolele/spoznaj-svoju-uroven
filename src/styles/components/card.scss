@@ -1,41 +1,45 @@
 @import "src/styles/variables.scss";
 
-$hover-transition-style: 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+.card-container {}
 
 .card-wrapper {
+    display: block;
+    position: relative;
+    padding-top: 73.74%; //ratio
+    margin: 1.07rem;
+
+    &:hover {
+        .card {
+            top: -10px;
+            box-shadow: 0 1px 16px rgba(0, 0, 0, 0.15);
+
+            .card-details {
+                height: 41%;
+            }
+        }
+    }
+}
+
+.card {
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
-}
 
-.card {
-    position: relative;
-    height: 0;
-    padding-top: 73.74%; //ratio
-    margin: 15px;
-    overflow: hidden;
-    background-color: #f9f9f9;
-    border-radius: 4px;
+    background-color: $color-bg-light-tinted;
+    border-radius: 0.3em;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
 
-    transition: margin-top $hover-transition-style, box-shadow 0.3s ease;
-
-    &:hover {
-        margin-top: 6px;
-        box-shadow: 0 1px 16px rgba(0, 0, 0, 0.15);
-
-        .card-details {
-            height: 41%;
-        }
-    }
+    transition: top $hover-transition-style, box-shadow 0.3s ease;
 
     &.--action {
         box-shadow: none;
 
         &:hover { //ignore default hover
-            margin-top: 15px;
+            top: 0;
+            box-shadow: none;
         }
     }
 }
@@ -46,9 +50,13 @@ $hover-transition-style: 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .card-image {
-    background-position: center center;
+    background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
+
+    img {
+        object-fit: cover;
+    }
 }
 
 .card-details {
@@ -58,7 +66,7 @@ $hover-transition-style: 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
     bottom: 0;
     padding: 0 10%;
     box-sizing: border-box;
-    background-color: #f9f9f9;
+    background-color: $color-bg-light-tinted;
 
     display: flex;
     flex-direction: column;
@@ -69,18 +77,22 @@ $hover-transition-style: 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .card-name {
-    font-size: 1.2rem;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
+    @include text-style-normal;
     color: $color-text-dark-strong;
+    max-height: 2em;
+    word-break: break-word;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
 }
 
 .card-description {
-    margin-top: 0.25em;
-    font-size: 1.11rem;
-    letter-spacing: 0.05em;
+    @include text-style-normal;
     color: $color-text-dark-normal;
+    text-transform: none;
+    font-weight: 400;
+    margin: 0.25em 0 0;
 
     overflow: hidden;
     transition: max-height $hover-transition-style;
@@ -108,12 +120,11 @@ $hover-transition-style: 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .card-action-icon {
-    width: 40px;
+    width: 2.85rem;
 }
 
 .card-action-name {
     @extend .card-name;
-
     color: $color-text-dark-normal;
     margin-top: 0.95em;
 }

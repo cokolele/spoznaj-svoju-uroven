@@ -1,41 +1,28 @@
 import "src/styles/components/inputs.scss";
 
-function InputButton({ label, onClick, className, Icon, IconLeft, IconRight, submit, error }) {
+function InputButton({ value, label, onClick, className, Icon, submit, outline, grey }) {
    return (
       <div className={`input-container --no-grow ${className ? className : ""}`}>
+         {
+            label &&
+            <span className="input-label" htmlFor={randomId}>{label + ":"}</span>
+         }
          <button
             type={submit ? "submit" : "button"}
-            className="input-button"
+            className={`input-button ${outline ? "--outline" : ""} ${grey ? "--grey" : ""}`}
             onClick={onClick}
          >
-            {
-               IconLeft &&
-               <div className="input-icon">
-                  { IconLeft }
-               </div>
-            }
-            {
-               label &&
-               <span className="input-label">{label}</span>
-            }
-            {
-               IconRight &&
-               <div className="input-icon">
-                  { IconRight }
-               </div>
-            }
             {
                Icon &&
                <div className="input-icon">
                   { Icon }
                </div>
             }
+            {
+               value &&
+               <span className="input-label">{value}</span>
+            }
          </button>
-         {
-            error && (
-               <div className="input-error">{error}</div>
-            )
-         }
       </div>
    );
 }

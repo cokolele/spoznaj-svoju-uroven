@@ -21,7 +21,7 @@ function ImageList() {
 
       switch (loadedCategory.response.status) {
          case 200:
-            dispatch(setBackgroundImageUrl(base + "/imasges/265x0/" + loadedCategory.json.images[0]?.fullpath));
+            dispatch(setBackgroundImageUrl(base + "/images/265x0/" + loadedCategory.json.images[0]?.fullpath));
             dispatch(setCategory({
                id: loadedCategory.json.gallery.path,
                category: {
@@ -58,7 +58,6 @@ function ImageList() {
             category && category.images && category.images.map((image, i) => {
                const Image = (
                   <LazyImage
-                     background
                      placeholder={"/images/default-photo.jpg"}
                      full={base + "/images/265x0/" + image.fullpath}
                   />
@@ -76,7 +75,7 @@ function ImageList() {
          <Card
             onClick={() => dispatch(setModal("addPhoto"))}
             actionName={"Pridať fotky"}
-            actionIcon={<AddPhotoIcon/>}
+            actionIcon={<AddPhotoIcon scale={2}/>}
          />
       </Gallery>
    )

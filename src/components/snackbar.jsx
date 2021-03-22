@@ -1,5 +1,5 @@
 /*
 
-   tu bolo by dobre asi vypisat backgrund api load errory a tak
+   tu by bolo asi dobre vypisovat background api load errory a ták
 
 */

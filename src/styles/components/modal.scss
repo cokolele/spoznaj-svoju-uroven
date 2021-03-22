@@ -4,10 +4,11 @@
     position: absolute;
     z-index: 1;
     top: 0;
+    left: 0;
     min-height: 100%;
     min-width: 100%;
     overflow: hidden;
-    background-color: rgba(0,0,0,0.75);
+    background-color: rgba(0, 0, 0, 0.75);
 
     display: flex;
     justify-content: center;
@@ -26,16 +27,11 @@
     align-items: center;
     background-color: transparent;
     border: none;
-    padding: 0;
-    padding: 0.95em 0 0.95em 0.95em;
-    cursor: pointer;
+    padding: 1em 0 1em 1em;
 
+    @include text-style-normal;
+    margin: 0;
     color: white;
-    font-size: 1.15rem;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    font-weight: 500;
-    line-height: 1;
 }
 
 .modal-close:active {
@@ -50,20 +46,20 @@
 
 .modal-close .icon {
     width: 1.7em;
-    margin-right: 0.6em;
+    margin: -0.1em 0.6em 0 0;
     fill: white;
 }
 
 .modal {
-    min-width: 720px;
-    background-color: white;
+    min-width: 51.5rem;
+    background-color: $color-bg-light-strong;
     padding: 2.15rem;
     box-sizing: border-box;
-    border-radius: 0.3em;
+    border-radius: 0.3rem;
 }
 
 .modal-title {
-    margin-top: 0;
-    margin-bottom: 1.2em;
+    @include text-style-header;
+    margin: 0 0 1.2em;
     color: $color-text-dark-strong;
 }

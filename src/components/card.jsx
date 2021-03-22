@@ -30,12 +30,14 @@ function Card({ linkTo, id, name, description, onClick, onMouseEnter, actionName
 
    return (
       <div className="card-container">
-         <div className={`card ${(actionName || actionIcon) ? "--action" : ""}`}
+         <ContentWrapper
+            className="card-wrapper"
+            to={linkTo}
             onMouseEnter={_onMouseEnter}
             onMouseLeave={_onMouseLeave}
             onClick={_onClick}
          >
-            <ContentWrapper to={linkTo} className="card-wrapper">
+            <div className={`card ${(actionName || actionIcon) ? "--action" : ""}`}>
                {
                   backgroundUrl && <div className="card-image" style={{backgroundImage: `url(${backgroundUrl})`}}></div>
                }
@@ -48,7 +50,7 @@ function Card({ linkTo, id, name, description, onClick, onMouseEnter, actionName
                      <div className="card-name">{name}</div>
                      <CSSTransition
                         in={showDescription}
-                        timeout={0.2}
+                        timeout={200}
                         onEnter={el => el.style.maxHeight = "0px"}
                         onEntering={el => el.style.maxHeight = el.scrollHeight + "px"}
                         onExit={el => el.style.maxHeight = el.scrollHeight + "px"}
@@ -67,8 +69,8 @@ function Card({ linkTo, id, name, description, onClick, onMouseEnter, actionName
                      <div className="card-action-name">{actionName}</div>
                   </div>
                }
-            </ContentWrapper>
-         </div>
+            </div>
+         </ContentWrapper>
       </div>
    )
 }

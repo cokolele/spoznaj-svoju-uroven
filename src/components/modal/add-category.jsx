@@ -67,8 +67,8 @@ function ModalAddCategory({ close }) {
    return (
       <form className="modal-add-category" onSubmit={onSubmit}>
          <InputRow>
-            <InputText placeholder="Zadajte názov kategórie" value={name} onChange={onChange} required />
-            <InputButton label="Pridať" onClick={onSubmit} IconLeft={<PlusIcon />} />
+            <InputText name="name" placeholder="Zadajte názov kategórie" value={name} onChange={onChange} required />
+            <InputButton value="Pridať" onClick={onSubmit} Icon={<PlusIcon />} />
          </InputRow>
          <CSSTransition
             in={showError}
@@ -79,9 +79,7 @@ function ModalAddCategory({ close }) {
             onExiting={el => el.style.maxHeight = "0px"}
             unmountOnExit
          >
-            <div className="input-error-container">
-               <div className="input-error">{error}</div>
-            </div>
+            <div className="modal-add-category-error">{error}</div>
          </CSSTransition>
       </form>
    )

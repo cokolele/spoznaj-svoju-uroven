@@ -14,8 +14,24 @@ const loadImage = url => new Promise((resolve, reject) => {
     shadowImg.onsuspend = errorHandler;
 
     shadowImg.src = url;
-})
+});
+
+const loadFileImage = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => resolve(reader.result);
+    const errorHandler = (e) => {
+        console.error(e);
+        reject(e)
+    };
+
+    reader.onerror = errorHandler;
+    reader.onabort = errorHandler;
+
+    reader.readAsDataURL(file);
+});
 
 export {
-    loadImage
+    loadImage,
+    loadFileImage
 }

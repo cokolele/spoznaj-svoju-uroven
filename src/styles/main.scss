@@ -6,8 +6,12 @@
     text-rendering: optimizeLegibility;
 }
 
+html {
+    font-size: $app-font-size;
+}
+
 body {
-    background-color: #f9f9f9;
+    background-color: $color-bg-light-tinted;
 
     &.--modal-active {
         box-sizing: border-box;
@@ -16,35 +20,20 @@ body {
 }
 
 #app {
-    font-family: 'Roboto', sans-serif;
+    font-family: $app-font;
 }
 
 ::placeholder {
     color: $color-text-dark-normal;
 }
 
-button[type="button"] {
+button[type="button"], label {
     cursor: pointer;
-}
-
-h1 {
-    font-size: 1.65rem;
-    margin: 1.7em 0;
-    font-weight: 500;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
+    outline: none;
+    border: none;
 }
 
 a {
     color: inherit;
     text-decoration: none;
-}
-
-h2 {
-    font-size: 1.2rem;
-    margin: 0.7em 0;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    text-decoration: none;
-    text-transform: uppercase;
 }

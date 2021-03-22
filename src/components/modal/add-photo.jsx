@@ -1,5 +1,11 @@
 import { useState } from "react";
 import api from "src/utils/api/api.js";
+import "src/styles/components/modal/add-photo.scss";
+
+import InputDragNDrop from "src/components/inputs/input-dragndrop.jsx";
+import InputButton from "src/components/inputs/input-button.jsx";
+import { PlusIcon } from "src/components/icon.jsx";
+import { CSSTransition } from "react-transition-group";
 
 import { useDispatch } from "react-redux";
 import { setCategory } from "src/state/gallerySlice.js";
@@ -7,62 +13,44 @@ import { setCategory } from "src/state/gallerySlice.js";
 function ModalAddCategory({ close }) {
    const dispatch = useDispatch();
 
-   const [files, setFiles] = useState([]);
    const [error, setError] = useState("");
+   const [showError, setShowError] = useState(false);
 
-   const onChange = e => {
-      if (error)
-         setError("");
+   const onSubmit = async (e) => {
+      e.preventDefault();
 
-      setName(e.target.value);
-   }
+      const addedCategory = await api.post("/gallery", {
+         name: nameTrimmed
+      });
 
-   const onAddFile = async (e, file) => {
-      if (!file) {
-         const inputElHidden = document.createElement("input");
-         inputElHidden.setAttribute("type", "file");
-         inputElHidden.setAttribute("accept", ".wld");
-         inputElHidden.addEventListener("input", async () => {
-            onAddFile(null, inputElHidden.files[0]);
-         });
-         inputElHidden.click();
-      } else {
-         setError("");
-
-         if (!file.name.includes(".wld")) {
-            setError("Please select .wld file format");
-            return;
-         }
-
-         if (file.size > 20*1024*1024) {
-            setError("File exceeded size limit (20 MB)");
-            return;
-         }
-
-         const valid = await verifyWorldFileFormat(file);
-         if (!valid)
-            setError("Invalid world file format");
-
-         const fileData = new FormData();
-         fileData.append("map", file);
-
-         const mapUpload = await api.post("/user/maps", fileData, false);
-
-         if (mapUpload.status != "ok") {
-            setError(mapUpload.message);
-            return;
-         }
-
-         setError("");
-         fetchMaps();
+      switch (addedCategory.response.status) {
+         case 201:
+            close();
+            break;
       }
    }
 
    return (
-      <form>
-         <input type="text" onChange={onChange} value={name}/>
-         <input type="submit" onClick={onAddFile} value="+ Pridať"/>
-         <div className="error">{error}</div>
+      <form className="modal-add-photo" onSubmit={onSubmit}>
+         <InputDragNDrop
+            accept=".jpg,.jpeg"
+            multiple
+            onFiles={files => console.log(files)}
+         />
+         <InputButton value="Pridať" onClick={onSubmit} Icon={<PlusIcon />} />
+         <CSSTransition
+            in={showError}
+            timeout={400}
+            onEnter={el => el.style.maxHeight = "0px"}
+            onEntering={el => el.style.maxHeight = el.scrollHeight + "px"}
+            onExit={el => el.style.maxHeight = el.scrollHeight + "px"}
+            onExiting={el => el.style.maxHeight = "0px"}
+            unmountOnExit
+         >
+            <div className="input-error-container">
+               <div className="input-error">{error}</div>
+            </div>
+         </CSSTransition>
       </form>
    )
 }

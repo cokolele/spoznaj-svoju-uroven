@@ -1,6 +1,10 @@
 import "src/styles/components/inputs.scss";
 
-function InputText({ label, value, onChange, width, className, placeholder, required, error }) {
+import { randomString } from "src/utils/string.js";
+
+function InputText({ name, label, value, onChange, className, placeholder, required }) {
+   const randomId = randomString(40);
+
    const _onChange = (e) => {
       onChange(e.target.value);
    };
@@ -9,14 +13,18 @@ function InputText({ label, value, onChange, width, className, placeholder, requ
       <div className={`input-container ${className ? className : ""}`}>
          {
             label &&
-            <span className="input-label">{label + ":"}</span>
+            <label className="input-label" htmlFor={randomId}>{label + ":"}</label>
          }
-         {
-            error && (
-               <div className="input-error">{error}</div>
-            )
-         }
-         <input className="input-text" type="text" value={value} onChange={_onChange} style={width && { width }} placeholder={placeholder} required={required}/>
+         <input
+            value={value}
+            onChange={_onChange}
+            className="input-text"
+            type="text"
+            name={name}
+            id={label ? randomId : null}
+            placeholder={placeholder}
+            required={required}
+         />
       </div>
    );
 }

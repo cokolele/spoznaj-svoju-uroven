@@ -2,14 +2,22 @@ import { useEffect, useState } from "react";
 import "src/styles/components/lazy-image.scss";
 
 import { CSSTransition } from "react-transition-group";
-import { loadImage } from "src/utils/image.js";
+import { loadImage, loadFileImage } from "src/utils/image.js";
 
-function LazyImage({ placeholder, full, background, className, duration = 300 }) {
+//trošku mess sry
+function LazyImage({ placeholder, full, file, background, className, duration = 300, style }) {
    const [from, setFrom] = useState("");
    const [to, setTo] = useState("");
    const [buffer, setBuffer] = useState("");
 
    useEffect(() => {
+      if (file) {
+         loadFileImage(file)
+            .then(loadedUrl => {
+               setBuffer(loadedUrl);
+            });
+      }
+
       if (!from && !to) { //init
 
          if (placeholder) {
@@ -39,10 +47,10 @@ function LazyImage({ placeholder, full, background, className, duration = 300 })
             .catch(e => console.error(e));
 
       }
-   }, [full]);
+   }, [full, file]);
 
    useEffect(() => {
-      if (!to && buffer && (buffer == placeholder || buffer == full) && buffer != from)
+      if (!to && buffer && (buffer == placeholder || buffer == full || file) && buffer != from)
          setTo(buffer);
    }, [buffer, to]);
 
@@ -50,9 +58,9 @@ function LazyImage({ placeholder, full, background, className, duration = 300 })
          <div className={`${className ? className : "lazy-image-container"}`}>
             {
                from && ( background ? (
-                  <div style={{backgroundImage: `url(${from})`}} className="lazy-image"></div>
+                  <div style={{...style, backgroundImage: `url(${from})`}} className="lazy-image"></div>
                ) : (
-                  <img src={from} className="lazy-image"/>
+                  <img src={from} style={style} className="lazy-image"/>
                ))
             }
             <CSSTransition
@@ -73,9 +81,9 @@ function LazyImage({ placeholder, full, background, className, duration = 300 })
             >
                {
                   background ? (
-                     <div style={{backgroundImage: `url(${to})`}} className="lazy-image"></div>
+                     <div style={{...style, backgroundImage: `url(${to})`}} className="lazy-image"></div>
                   ) : (
-                     <img src={from} className="lazy-image"/>
+                     <img src={to} style={style} className="lazy-image"/>
                   )
                }
             </CSSTransition>

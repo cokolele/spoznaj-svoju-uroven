@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { closeModal } from "src/state/appSlice.js";
 import "src/styles/components/modal.scss";
@@ -15,7 +15,7 @@ const Views = {
       View: ModalAddCategory
    },
    addPhoto: {
-      title: "Pridat fotky",
+      title: "Pridať fotky",
       View: ModalAddPhoto
    }
 };
@@ -44,7 +44,7 @@ function Modal({ View, title }) {
          onClose();
    }
 
-   useEffect(() => {
+   useLayoutEffect(() => {
       const body = document.body;
       const root = document.getElementById("app");
 

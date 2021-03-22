@@ -1,7 +1,41 @@
+$app-font: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+$app-font-size: 87.5%;
+
 $color-text-dark-strong: #555555;
 $color-text-dark-normal: #aaaaaa;
 $color-text-dark-faded: #eeeeee;
 
-$color-text-light-strong: white;
+$color-text-light-strong: #ffffff;
+
+$color-bg-light-strong: #ffffff;
+$color-bg-light-tinted: #f9f9f9;
 
 $input-accent: #42c78d;
+
+@mixin text-style {
+    color: inherit;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+@mixin text-style-header {
+    @include text-style;
+    font-size: 1.71rem;
+    margin: 1.2em 0;
+}
+
+@mixin text-style-normal {
+    @include text-style;
+    font-size: 1.14rem;
+    margin: 0.7em 0;
+}
+
+@mixin text-style-small {
+    @include text-style;
+    font-size: 1rem;
+    text-transform: none;
+}
+
+$hover-transition-style: 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
