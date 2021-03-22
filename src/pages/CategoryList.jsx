@@ -31,7 +31,8 @@ function CategoryList() {
 
       switch (loadedCategories.response.status) {
          case 200:
-            dispatch(setBackgroundImageUrl(base + "/images/265x0/" + loadedCategories.json.galleries[0]?.image?.fullpath));
+            if (loadedCategories.json.galleries[0]?.image?.fullpath)
+               dispatch(setBackgroundImageUrl(base + "/images/265x0/" + loadedCategories.json.galleries[0].image.fullpath));
             dispatch(setCategories(loadedCategories.json.galleries));
             break;
 
@@ -82,26 +83,22 @@ function CategoryList() {
          location="Kategórie"
       >
          {
-            categoryIds.map((id, i) => {
-               const Image = (
-                  <LazyImage
-                     background
-                     placeholder={"/images/default-folder.jpg"}
-                     full={categoryList[id].image?.fullpath && base + "/images/265x0/" + categoryList[id].image.fullpath}
-                  />
-               )
-
-               return (
-                  <Card key={i}
-                     id={id}
-                     linkTo={"/category/" + categoryList[id].path}
-                     Image={Image}
-                     name={categoryList[id].name}
-                     description={categoryList[id].images !== undefined ? getCountLabel(categoryList[id].images.length) : "loading..."}
-                     onMouseEnter={onCategoryMouseEnter}
-                  />
-               )
-            })
+            categoryIds.map((id, i) => (
+               <Card key={i}
+                  id={id}
+                  linkTo={"/category/" + categoryList[id].path}
+                  Image={
+                     <LazyImage
+                        background
+                        placeholder={"/images/default-folder.jpg"}
+                        full={categoryList[id].image?.fullpath && base + "/images/265x0/" + categoryList[id].image.fullpath}
+                     />
+                  }
+                  name={categoryList[id].name}
+                  description={categoryList[id].images !== undefined ? getCountLabel(categoryList[id].images.length) : "loading..."}
+                  onMouseEnter={onCategoryMouseEnter}
+               />
+            ))
          }
          <Card
             onClick={() => dispatch(setModal("addCategory"))}

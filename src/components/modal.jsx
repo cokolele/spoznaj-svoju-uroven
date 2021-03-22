@@ -21,17 +21,18 @@ const Views = {
 };
 
 function ModalManager() {
-   const modal = useSelector(state => state.app.modal);
+   let modal = useSelector(state => state.app.modal);
 
-   if (!modal || !Views[modal].View)
+   if (typeof modal == "string" || modal === null)
+      modal = [modal, {}];
+
+   if (!modal[0] || !Views[modal[0]].View)
       return "";
 
-   return (
-      modal && Views[modal].View && <Modal {...Views[modal]} />
-   )
+   return <Modal {...Views[modal[0]]} modalSpecificProps={modal[1]}/>;
 }
 
-function Modal({ View, title }) {
+function Modal({ View, title, modalSpecificProps }) {
    const dispatch = useDispatch();
    const wrapper = useRef(null);
 
@@ -74,7 +75,7 @@ function Modal({ View, title }) {
             </button>
             <div className="modal">
                <h1 className="modal-title">{title}</h1>
-               <View close={onClose} />
+               <View close={onClose} modalSpecificProps={modalSpecificProps}/>
             </div>
          </div>
       </div>

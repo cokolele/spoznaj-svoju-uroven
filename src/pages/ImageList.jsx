@@ -48,6 +48,15 @@ function ImageList() {
       console.log(id + "th image clicked");
    }
 
+   const onAddNewImage = () => {
+      dispatch(setModal(["addPhoto", {
+         category: urlCategory,
+         callback: () => {
+            loadCategory();
+         }
+      }]));
+   }
+
    return (
       <Gallery
          title="Fotogaléria"
@@ -55,27 +64,23 @@ function ImageList() {
          locationBackTo="/"
       >
          {
-            category && category.images && category.images.map((image, i) => {
-               const Image = (
-                  <LazyImage
-                     placeholder={"/images/default-photo.jpg"}
-                     full={base + "/images/265x0/" + image.fullpath}
-                  />
-               )
-
-               return (
-                  <Card key={i}
-                     id={image.fullpath}
-                     Image={Image}
-                     onClick={onImageClick}
-                  />
-               )
-            })
+            category && category.images && category.images.map((image, i) => (
+               <Card key={i}
+                  id={image.fullpath}
+                  Image={
+                     <LazyImage
+                        placeholder={"/images/default-photo.jpg"}
+                        full={base + "/images/265x0/" + image.fullpath}
+                     />
+                  }
+                  onClick={onImageClick}
+               />
+            ))
          }
          <Card
-            onClick={() => dispatch(setModal("addPhoto"))}
+            onClick={onAddNewImage}
             actionName={"Pridať fotky"}
-            actionIcon={<AddPhotoIcon scale={2}/>}
+            actionIcon={<AddPhotoIcon/>}
          />
       </Gallery>
    )

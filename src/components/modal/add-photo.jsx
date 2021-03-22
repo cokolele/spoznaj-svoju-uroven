@@ -10,24 +10,84 @@ import { CSSTransition } from "react-transition-group";
 import { useDispatch } from "react-redux";
 import { setCategory } from "src/state/gallerySlice.js";
 
-function ModalAddCategory({ close }) {
+function ModalAddCategory({ close, modalSpecificProps }) {
    const dispatch = useDispatch();
 
+   const [files, setFiles] = useState([]);
    const [error, setError] = useState("");
    const [showError, setShowError] = useState(false);
+   const [loading, setLoading] = useState(false);
+
+   const onFiles = (files) => {
+      setFiles(files)
+      setShowError(false);
+   }
+
+   const removeFile = (index) => {
+      setFiles(files.filter((file, i) => index != i));
+   }
 
    const onSubmit = async (e) => {
       e.preventDefault();
 
-      const addedCategory = await api.post("/gallery", {
-         name: nameTrimmed
+      if (!files.length) {
+         setError("Vyberte obrázky.");
+         setShowError(true);
+         return;
+      }
+
+      let errorCheck = false;
+
+      files.forEach(file => {
+         const fileName = file.name.length < 30 ? file.name : (file.name.slice(0, 30) + "...");
+
+         if (file.size > 30*1024*1024) {
+            errorCheck = true;
+            setError("Veľkost súboru " + fileName + " je väčšia ako 30 MB.");
+            setShowError(true);
+         } else if (!file.name.match(/\.(jpg|jpeg)$/)) {
+            errorCheck = true;
+            setError("Súbor " + fileName + " nie je JPEG obrázok.");
+            setShowError(true);
+         }
       });
 
-      switch (addedCategory.response.status) {
-         case 201:
-            close();
-            break;
+      if (errorCheck)
+         return;
+
+      let uploadErrors = "";
+
+      await Promise.all(files.map(async (file, i) => {
+         const fileName = file.name.length < 30 ? file.name : (file.name.slice(0, 30) + "...");
+         const fileData = new FormData();
+         fileData.append("image", file);
+
+         const uploaded = await api.post("/gallery/" + modalSpecificProps.category, fileData, false);
+
+         switch (uploaded.response.status) {
+            case 201:
+               removeFile(i);
+               break;
+
+            case 500:
+            case 400:
+            case -1:
+               uploadErrors += "Nahrávanie súboru " + fileName + " zlyhalo.\n";
+               break;
+            case 404:
+               uploadErrors = "Kategóriu sa nepodarilo nájsť.\n";
+               break;
+         }
+      }));
+
+      if (uploadErrors) {
+         setError(uploadErrors);
+         setShowError(true);
+         return;
       }
+
+      modalSpecificProps.callback();
+      close();
    }
 
    return (
@@ -35,9 +95,10 @@ function ModalAddCategory({ close }) {
          <InputDragNDrop
             accept=".jpg,.jpeg"
             multiple
-            onFiles={files => console.log(files)}
+            onFiles={onFiles}
+            editable={!loading}
          />
-         <InputButton value="Pridať" onClick={onSubmit} Icon={<PlusIcon />} />
+         <InputButton value="Pridať" onClick={onSubmit} Icon={<PlusIcon />} loading={loading} />
          <CSSTransition
             in={showError}
             timeout={400}
@@ -47,9 +108,7 @@ function ModalAddCategory({ close }) {
             onExiting={el => el.style.maxHeight = "0px"}
             unmountOnExit
          >
-            <div className="input-error-container">
-               <div className="input-error">{error}</div>
-            </div>
+            <div className="modal-add-photo-error">{error}</div>
          </CSSTransition>
       </form>
    )

@@ -1,3 +1,5 @@
+@import "src/styles/variables.scss";
+
 .modal-add-photo {
     display: flex;
     flex-direction: column;
@@ -5,5 +7,18 @@
 
     .input-dragndrop {
         margin-bottom: 2.15rem;
+    }
+
+    .modal-add-photo-error {
+        @include text-style-small;
+        color: rgba(255, 0, 0, 0.6);
+        align-self: flex-end;
+
+        margin: 0.57rem 0.5rem 0;
+        white-space: pre-wrap;
+        text-align: right;
+
+        overflow: hidden;
+        transition: max-height 0.4s ease-in-out;
     }
 }

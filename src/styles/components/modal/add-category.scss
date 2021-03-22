@@ -15,4 +15,14 @@
         overflow: hidden;
         transition: max-height 0.4s ease-in-out;
     }
+
+    @include mappy-query(tablet) {
+        .input-text {
+            padding-right: 0;
+        }
+
+        .input-button {
+            margin-top: 0.57em;
+        }
+    }
 }

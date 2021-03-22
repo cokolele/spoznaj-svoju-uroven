@@ -5,8 +5,8 @@
     z-index: 1;
     top: 0;
     left: 0;
-    min-height: 100%;
-    min-width: 100%;
+    min-height: 100vh;
+    min-width: 100vw;
     overflow: hidden;
     background-color: rgba(0, 0, 0, 0.75);
 
@@ -20,6 +20,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-end;
+
+    @include mappy-query(tablet) {
+        width: 90%;
+    }
 }
 
 .modal-close {
@@ -56,10 +60,20 @@
     padding: 2.15rem;
     box-sizing: border-box;
     border-radius: 0.3rem;
+
+    @include mappy-query(tablet) {
+        max-width: 100%;
+        min-width: 100%;
+        width: 100%;
+    }
 }
 
 .modal-title {
     @include text-style-header;
     margin: 0 0 1.2em;
     color: $color-text-dark-strong;
+
+    @include mappy-query(tablet) {
+        margin-bottom: 0.7em;
+    }
 }

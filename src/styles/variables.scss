@@ -1,3 +1,26 @@
+@import "mappy-breakpoints";
+
+$breakpoints: (
+    "mobile": 768px,
+    "tablet": 992px,
+    "laptop": 1260px,
+    "uhd": 2000px
+);
+
+$mappy-queries: (
+    mobile: mappy-bp(max-width mobile),
+    tablet: mappy-bp(max-width tablet),
+    laptop: mappy-bp(max-width laptop),
+    uhd: mappy-bp(min-width uhd)
+);
+
+/*
+    576px for portrait phones
+    768px for tablets
+    992px for laptops
+    1200px for large devices
+*/
+
 $app-font: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 $app-font-size: 87.5%;
 
@@ -30,6 +53,10 @@ $input-accent: #42c78d;
     @include text-style;
     font-size: 1.14rem;
     margin: 0.7em 0;
+
+    @include mappy-query(mobile) {
+        font-size: 1rem;
+    }
 }
 
 @mixin text-style-small {

@@ -15,6 +15,14 @@
 
             .card-details {
                 height: 41%;
+
+                @include mappy-query(tablet) {
+                    height: 35%;
+                }
+            }
+
+            @include mappy-query(tablet) {
+                top: 0;
             }
         }
     }
@@ -74,6 +82,10 @@
     justify-content: center;
 
     transition: height $hover-transition-style;
+
+    @include mappy-query(tablet) {
+        height: 35%;
+    }
 }
 
 .card-name {
@@ -92,10 +104,18 @@
     color: $color-text-dark-normal;
     text-transform: none;
     font-weight: 400;
-    margin: 0.25em 0 0;
+    position: relative;
+    top: 0.25em;
+    margin: 0;
 
+    max-height: 0;
     overflow: hidden;
     transition: max-height $hover-transition-style;
+
+    @include mappy-query(tablet) {
+        top: 0.15em;
+        max-height: none !important;
+    }
 }
 
 .card-action {

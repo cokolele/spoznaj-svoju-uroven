@@ -5,7 +5,7 @@ import InputFile from "src/components/inputs/input-file.jsx";
 import { AddPhotoIcon } from "src/components/icon.jsx";
 import LazyImage from "src/components/lazy-image.jsx";
 
-function InputDragNDrop({ onFiles, className, multiple, accept }) {
+function InputDragNDrop({ onFiles, className, multiple, accept, editable }) {
    const [files, setFiles] = useState([]);
    const [dragging, setDragging] = useState(0);
 
@@ -37,7 +37,8 @@ function InputDragNDrop({ onFiles, className, multiple, accept }) {
    }
 
    const removeFile = (index) => {
-      setFiles(files.filter((file, i) => index != i));
+      if (editable)
+         setFiles(files.filter((file, i) => index != i));
    }
 
    const onDragOver = e => {
@@ -55,13 +56,13 @@ function InputDragNDrop({ onFiles, className, multiple, accept }) {
       >
          {
             files.length != 0 &&
-            <div className="input-dragndrop-preview">
+            <div className={`input-dragndrop-preview ${editable ? "--editable" : ""}`}>
                {
                   files.map((file, i) => {
-                     if (file.size != 0 && file.name.match(/\.(png|jpg|jpeg|gif)$/)) {
+                     if (file.size != 0) {
                         return (
-                           <div className="input-dragndrop-preview-photo">
-                              <LazyImage placeholder={"/images/default-photo.jpg"} file={file} key={i}/>
+                           <div className="input-dragndrop-preview-photo" key={i}>
+                              <LazyImage placeholder={file.name.match(/\.(png|jpg|jpeg|gif)$/) ? "/images/default-photo.jpg" : "/images/default-file.jpg"} full={file}/>
                               <div className="input-dragndrop-preview-photo-description">{file.name}</div>
                               <button type="button" className="input-dragndrop-preview-photo-remove" onClick={() => {removeFile(i)}}>Odstrániť</button>
                            </div>

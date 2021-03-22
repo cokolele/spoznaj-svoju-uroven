@@ -55,8 +55,6 @@ function Card({ linkTo, id, name, description, onClick, onMouseEnter, actionName
                         onEntering={el => el.style.maxHeight = el.scrollHeight + "px"}
                         onExit={el => el.style.maxHeight = el.scrollHeight + "px"}
                         onExiting={el => el.style.maxHeight = "0px"}
-                        mountOnEnter
-                        unmountOnExit
                      >
                         <div className="card-description">{description}</div>
                      </CSSTransition>

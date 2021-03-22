@@ -9,6 +9,18 @@
     display: flex;
     flex-direction: column;
     margin: 0 auto;
+
+    @include mappy-query(laptop) {
+        width: 62.8rem;
+    }
+
+    @include mappy-query(tablet) {
+        width: 41.8rem;
+    }
+
+    @include mappy-query(mobile) {
+        width: 100%;
+    }
 }
 
 .gallery-background {
@@ -19,6 +31,10 @@
     height: 24.2rem;
     overflow: hidden;
     z-index: -1;
+
+    @include mappy-query(mobile) {
+        height: 20rem;
+    }
 
     .lazy-image {
         position: absolute;
@@ -76,5 +92,13 @@
 
     > * {
         flex-basis: 25%;
+
+        @include mappy-query(laptop) {
+            flex-basis: 33%;
+        }
+
+        @include mappy-query(tablet) {
+            flex-basis: 50%;
+        }
     }
 }

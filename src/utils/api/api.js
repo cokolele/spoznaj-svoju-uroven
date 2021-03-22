@@ -36,11 +36,16 @@ const post = async (resource = "/", body = {}, contentType = "application/json")
         const options = {
             method: "POST",
             credentials: "include",
-            headers: {
-                "Content-Type": contentType
-            },
+            headers: {},
             body: contentType == "application/json" ? JSON.stringify(body) : body
         };
+
+        if (contentType) {
+            options.headers = {
+                ...options.headers,
+                "Content-Type": contentType
+            };
+        }
 
         const response = await fetch("/api" + resource, options);
         const json = await response.json();

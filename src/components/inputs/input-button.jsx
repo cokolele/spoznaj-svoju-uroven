@@ -1,6 +1,13 @@
 import "src/styles/components/inputs.scss";
 
-function InputButton({ value, label, onClick, className, Icon, submit, outline, grey }) {
+import Loader from "src/components/loader.jsx";
+
+function InputButton({ value, label, onClick, className, Icon, submit, outline, grey, loading, disabled }) {
+   const _onClick = e => {
+      if (!disabled)
+         onClick(e);
+   }
+
    return (
       <div className={`input-container --no-grow ${className ? className : ""}`}>
          {
@@ -9,8 +16,8 @@ function InputButton({ value, label, onClick, className, Icon, submit, outline, 
          }
          <button
             type={submit ? "submit" : "button"}
-            className={`input-button ${outline ? "--outline" : ""} ${grey ? "--grey" : ""}`}
-            onClick={onClick}
+            className={`input-button ${outline ? "--outline" : ""} ${grey ? "--grey" : ""} ${(disabled || loading) ? "--disabled" : ""}`}
+            onClick={_onClick}
          >
             {
                Icon &&
@@ -21,6 +28,10 @@ function InputButton({ value, label, onClick, className, Icon, submit, outline, 
             {
                value &&
                <span className="input-label">{value}</span>
+            }
+            {
+               loading &&
+               <Loader/>
             }
          </button>
       </div>

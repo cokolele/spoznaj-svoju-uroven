@@ -1,0 +1,7 @@
+- chrome gallery bg sharp fade edges bug
+- responsive
+- tabbing fix (styling, trapping focus...)
+- admin route (remove category, photo)
+
+- snackbar
+- modal prepisat ako context/provider model pre celu appku, aktualne to ide cez state aj s jeho propami ktore nemusia byt len dovolene primitive types

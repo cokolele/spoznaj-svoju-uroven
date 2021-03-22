@@ -2,55 +2,36 @@ import { useEffect, useState } from "react";
 import "src/styles/components/lazy-image.scss";
 
 import { CSSTransition } from "react-transition-group";
-import { loadImage, loadFileImage } from "src/utils/image.js";
+import { loadImage } from "src/utils/image.js";
 
-//trošku mess sry
-function LazyImage({ placeholder, full, file, background, className, duration = 300, style }) {
+function LazyImage({ placeholder, full, background, className, duration = 300 }) {
    const [from, setFrom] = useState("");
    const [to, setTo] = useState("");
    const [buffer, setBuffer] = useState("");
 
    useEffect(() => {
-      if (file) {
-         loadFileImage(file)
+      if (placeholder) {
+         loadImage(placeholder)
             .then(loadedUrl => {
-               setBuffer(loadedUrl);
-            });
+               if (!from && !to)
+                  setBuffer(loadedUrl);
+            })
+            .catch(e => console.error(placeholder, e));
       }
+   }, []);
 
-      if (!from && !to) { //init
-
-         if (placeholder) {
-            loadImage(placeholder)
-               .then(loadedUrl => {
-                  if (!buffer)
-                     setBuffer(loadedUrl);
-               })
-               .catch(e => console.error(e));
-         }
-
-         if (full) {
-            loadImage(full)
-               .then(loadedUrl => {
-                  if (!buffer || buffer == placeholder)
-                     setBuffer(loadedUrl);
-               })
-               .catch(e => console.error(e));
-         }
-
-      } else if (full) { //full image changed
-
+   useEffect(() => {
+      if (full) {
          loadImage(full)
             .then(loadedUrl => {
                setBuffer(loadedUrl);
             })
-            .catch(e => console.error(e));
-
+            .catch(e => console.error(full, e));
       }
-   }, [full, file]);
+   }, [full]);
 
    useEffect(() => {
-      if (!to && buffer && (buffer == placeholder || buffer == full || file) && buffer != from)
+      if (!to && buffer && buffer != from)
          setTo(buffer);
    }, [buffer, to]);
 
@@ -58,9 +39,9 @@ function LazyImage({ placeholder, full, file, background, className, duration = 
          <div className={`${className ? className : "lazy-image-container"}`}>
             {
                from && ( background ? (
-                  <div style={{...style, backgroundImage: `url(${from})`}} className="lazy-image"></div>
+                  <div style={{backgroundImage: `url(${from})`}} className="lazy-image"></div>
                ) : (
-                  <img src={from} style={style} className="lazy-image"/>
+                  <img src={from} className="lazy-image"/>
                ))
             }
             <CSSTransition
@@ -81,9 +62,9 @@ function LazyImage({ placeholder, full, file, background, className, duration = 
             >
                {
                   background ? (
-                     <div style={{...style, backgroundImage: `url(${to})`}} className="lazy-image"></div>
+                     <div style={{backgroundImage: `url(${to})`}} className="lazy-image"></div>
                   ) : (
-                     <img src={to} style={style} className="lazy-image"/>
+                     <img src={to} className="lazy-image"/>
                   )
                }
             </CSSTransition>
