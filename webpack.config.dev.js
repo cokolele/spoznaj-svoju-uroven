@@ -17,7 +17,8 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: "app.[name].js",
-        assetModuleFilename: "asset[ext]"
+        assetModuleFilename: "asset.[id][ext]",
+        chunkFilename: "[id].[chunkhash].js"
     },
     resolve: {
         alias: {
@@ -82,7 +83,7 @@ module.exports = {
                 ],
             },
             {
-                test: /\.png$/,
+                test: /\.(png|jpg|jpeg)$/,
                 type: "asset/resource"
             },
             {

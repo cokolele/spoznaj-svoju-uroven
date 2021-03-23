@@ -1,57 +1,42 @@
-import { useLayoutEffect, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { closeModal } from "src/state/appSlice.js";
+import { useLayoutEffect, useState, useEffect, useRef, Fragment, createContext, useContext } from "react";
+import { createPortal } from "react-dom";
 import "src/styles/components/modal.scss";
 
-import getScrollbarWidth from "src/utils/get-scrollbar-width.js";
+import FocusTrap from "focus-trap-react";
 import { CloseIcon } from "src/components/icon.jsx";
-
 import ModalAddCategory from "src/components/modal/add-category.jsx";
 import ModalAddPhoto from "src/components/modal/add-photo.jsx";
+import ModalPhoto from "src/components/modal/photo.jsx";
 
-const Views = {
-   addCategory: {
-      title: "Pridať kategóriu",
-      View: ModalAddCategory
-   },
-   addPhoto: {
-      title: "Pridať fotky",
-      View: ModalAddPhoto
-   }
-};
+import getScrollbarWidth from "src/utils/get-scrollbar-width.js";
 
-function ModalManager() {
-   let modal = useSelector(state => state.app.modal);
+const ModalContext = createContext();
 
-   if (typeof modal == "string" || modal === null)
-      modal = [modal, {}];
+function ModalProvider({ children }) {
+   const modalContainerRef = useRef();
+   const [modalContainer, setModalContainer] = useState();
 
-   if (!modal[0] || !Views[modal[0]].View)
-      return "";
+   useEffect(() => {
+      setModalContainer(modalContainerRef.current);
+   }, []);
 
-   return <Modal {...Views[modal[0]]} modalSpecificProps={modal[1]}/>;
+   return (
+      <Fragment>
+         <ModalContext.Provider value={modalContainer}>{children}</ModalContext.Provider>
+         <div className="modal-container" ref={modalContainerRef} />
+      </Fragment>
+   );
 }
 
-function Modal({ View, title, modalSpecificProps }) {
-   const dispatch = useDispatch();
-   const wrapper = useRef(null);
-
-   const onClose = () => {
-      dispatch(closeModal());
-   }
-
-   const onModalMouseDown = (e) => {
-      if (e.target.classList.contains("modal-background"))
-         onClose();
-   }
+function Modal({ children, onClose, initialFocus }) {
+   const modalContainerRef = useContext(ModalContext);
 
    useLayoutEffect(() => {
-      const body = document.body;
-      const root = document.getElementById("app");
-
-      wrapper.current.style.top = window.pageYOffset + "px";
-      body.style.paddingRight = getScrollbarWidth() + "px";
-      body.classList.add("--modal-active");
+      if (document.body.scrollHeight > window.innerHeight) {
+         document.body.style.paddingRight = getScrollbarWidth() + "px";
+      }
+      document.body.classList.add("--modal-active");
+      modalContainerRef.style.top = window.pageYOffset + "px";
 
       const keyDownHandler = (e) => {
          if (e.code == "Escape")
@@ -60,26 +45,48 @@ function Modal({ View, title, modalSpecificProps }) {
 
       window.addEventListener("keydown", keyDownHandler);
       return () => {
-         body.classList.remove("--modal-active");
-         body.style.paddingRight = "";
+         document.body.classList.remove("--modal-active");
+         document.body.style.paddingRight = "";
          window.removeEventListener("keydown", keyDownHandler);
       };
    }, []);
 
-   return (
-      <div className="modal-background" onMouseDown={onModalMouseDown} ref={wrapper}>
-         <div className="modal-container">
-            <button className="modal-close" type="button" onClick={onClose}>
-               <CloseIcon />
-               Zavrieť
-            </button>
-            <div className="modal">
-               <h1 className="modal-title">{title}</h1>
-               <View close={onClose} modalSpecificProps={modalSpecificProps}/>
+   const onBackgroundClick = (e) => {
+      if (e.target.classList.contains("modal-background") || e.target.classList.contains("modal-window"))
+         onClose();
+   }
+
+   if (!modalContainerRef)
+      return "";
+
+   return createPortal(
+      <div className="modal-background" onClick={onBackgroundClick} onMouseDown={onBackgroundClick}>
+         <FocusTrap focusTrapOptions={{initialFocus, fallbackFocus: ".modal > h1 + *"}}>
+            <div className="modal-window">
+               <button className="modal-window-close" type="button" onClick={onClose}>
+                  <CloseIcon />
+                  Zavrieť
+               </button>
+               { children }
             </div>
-         </div>
+         </FocusTrap>
+      </div>
+   , modalContainerRef);
+}
+
+function ModalTemplate({ title, children }) {
+   return (
+      <div className="modal-template">
+         <h1 className="modal-template-title">{title}</h1>
+         { children }
       </div>
    );
 }
 
-export default ModalManager;
+export default Modal
+
+export {
+   ModalProvider,
+   Modal,
+   ModalTemplate
+}

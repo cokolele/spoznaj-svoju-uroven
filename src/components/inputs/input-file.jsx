@@ -18,7 +18,7 @@ function InputFile({ label, onFiles, className, name, value, multiple, accept, o
             label &&
             <label className="input-label" htmlFor={randomId}>{label + ":"}</label>
          }
-         <label className={`input-label --button ${outline ? "--outline" : ""} ${grey ? "--grey" : ""}`} htmlFor={randomId}>
+         <label className={`input-label --button ${outline ? "--outline" : ""} ${grey ? "--grey" : ""}`} htmlFor={randomId} tabIndex="0">
             { value }
          </label>
          <input
@@ -29,7 +29,7 @@ function InputFile({ label, onFiles, className, name, value, multiple, accept, o
             name={name}
             multiple={multiple}
             accept={accept}
-            tabIndex={11}
+            tabIndex={-1}
          />
       </div>
    );

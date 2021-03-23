@@ -5,6 +5,9 @@ import InputFile from "src/components/inputs/input-file.jsx";
 import { AddPhotoIcon } from "src/components/icon.jsx";
 import LazyImage from "src/components/lazy-image.jsx";
 
+import defaultFile from "src/images/default-file.jpg";
+import defaultPhoto from "src/images/default-photo.jpg";
+
 function InputDragNDrop({ onFiles, className, multiple, accept, editable }) {
    const [files, setFiles] = useState([]);
    const [dragging, setDragging] = useState(0);
@@ -62,7 +65,7 @@ function InputDragNDrop({ onFiles, className, multiple, accept, editable }) {
                      if (file.size != 0) {
                         return (
                            <div className="input-dragndrop-preview-photo" key={i}>
-                              <LazyImage placeholder={file.name.match(/\.(png|jpg|jpeg|gif)$/) ? "/images/default-photo.jpg" : "/images/default-file.jpg"} full={file}/>
+                              <LazyImage placeholder={file.name.match(/\.(png|jpg|jpeg|gif)$/) ? defaultPhoto : defaultFile} full={file}/>
                               <div className="input-dragndrop-preview-photo-description">{file.name}</div>
                               <button type="button" className="input-dragndrop-preview-photo-remove" onClick={() => {removeFile(i)}}>Odstrániť</button>
                            </div>

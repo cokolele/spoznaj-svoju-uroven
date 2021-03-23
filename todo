@@ -1,7 +1,13 @@
-- chrome gallery bg sharp fade edges bug
-- responsive
-- tabbing fix (styling, trapping focus...)
+[bugs]
+- gallery bg image flashing
+- [chrome] gallery bg sharp fade edges
+- lazy image placeholder overriding full
+- [chrome] card description bg bleed
+
+[features]
+- uhd responsive
 - admin route (remove category, photo)
 
+[extra features]
 - snackbar
-- modal prepisat ako context/provider model pre celu appku, aktualne to ide cez state aj s jeho propami ktore nemusia byt len dovolene primitive types
+- photo modal hasNext hasPrev props

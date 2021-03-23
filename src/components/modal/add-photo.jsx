@@ -2,17 +2,13 @@ import { useState } from "react";
 import api from "src/utils/api/api.js";
 import "src/styles/components/modal/add-photo.scss";
 
+import { Modal, ModalTemplate } from "src/components/modal.jsx";
 import InputDragNDrop from "src/components/inputs/input-dragndrop.jsx";
 import InputButton from "src/components/inputs/input-button.jsx";
 import { PlusIcon } from "src/components/icon.jsx";
-import { CSSTransition } from "react-transition-group";
+import SlideDown from "src/components/slide-down.jsx";
 
-import { useDispatch } from "react-redux";
-import { setCategory } from "src/state/gallerySlice.js";
-
-function ModalAddCategory({ close, modalSpecificProps }) {
-   const dispatch = useDispatch();
-
+function ModalAddPhoto({ onClose, onAdded, category }) {
    const [files, setFiles] = useState([]);
    const [error, setError] = useState("");
    const [showError, setShowError] = useState(false);
@@ -31,7 +27,7 @@ function ModalAddCategory({ close, modalSpecificProps }) {
       e.preventDefault();
 
       if (!files.length) {
-         setError("Vyberte obrázky.");
+         setError("Vyberte fotky.");
          setShowError(true);
          return;
       }
@@ -43,13 +39,16 @@ function ModalAddCategory({ close, modalSpecificProps }) {
 
          if (file.size > 30*1024*1024) {
             errorCheck = true;
-            setError("Veľkost súboru " + fileName + " je väčšia ako 30 MB.");
+            setError("Veľkost fotky " + fileName + " je väčšia ako 30 MB.");
             setShowError(true);
          } else if (!file.name.match(/\.(jpg|jpeg)$/)) {
             errorCheck = true;
-            setError("Súbor " + fileName + " nie je JPEG obrázok.");
+            setError("Fotka " + fileName + " nie je vo formáte JPEG.");
             setShowError(true);
          }
+         /*
+          * additional file content checks (magic number...)
+          */
       });
 
       if (errorCheck)
@@ -62,7 +61,7 @@ function ModalAddCategory({ close, modalSpecificProps }) {
          const fileData = new FormData();
          fileData.append("image", file);
 
-         const uploaded = await api.post("/gallery/" + modalSpecificProps.category, fileData, false);
+         const uploaded = await api.post("/gallery/" + category, fileData, false);
 
          switch (uploaded.response.status) {
             case 201:
@@ -80,38 +79,39 @@ function ModalAddCategory({ close, modalSpecificProps }) {
          }
       }));
 
+      onAdded();
+
       if (uploadErrors) {
          setError(uploadErrors);
          setShowError(true);
          return;
       }
 
-      modalSpecificProps.callback();
-      close();
+      onClose();
    }
 
    return (
-      <form className="modal-add-photo" onSubmit={onSubmit}>
-         <InputDragNDrop
-            accept=".jpg,.jpeg"
-            multiple
-            onFiles={onFiles}
-            editable={!loading}
-         />
-         <InputButton value="Pridať" onClick={onSubmit} Icon={<PlusIcon />} loading={loading} />
-         <CSSTransition
-            in={showError}
-            timeout={400}
-            onEnter={el => el.style.maxHeight = "0px"}
-            onEntering={el => el.style.maxHeight = el.scrollHeight + "px"}
-            onExit={el => el.style.maxHeight = el.scrollHeight + "px"}
-            onExiting={el => el.style.maxHeight = "0px"}
-            unmountOnExit
-         >
-            <div className="modal-add-photo-error">{error}</div>
-         </CSSTransition>
-      </form>
+      <Modal initialFocus="input" onClose={onClose}>
+         <ModalTemplate title="Pridať fotky">
+            <form className="modal-add-photo" onSubmit={onSubmit}>
+               <InputDragNDrop
+                  accept=".jpg,.jpeg"
+                  multiple
+                  onFiles={onFiles}
+                  editable={!loading}
+               />
+               <InputButton value="Pridať" onClick={onSubmit} Icon={<PlusIcon />} loading={loading} />
+               <SlideDown
+                  show={showError}
+                  duration={400}
+                  unmountOnExit
+               >
+                  <div className="modal-add-photo-error">{error}</div>
+               </SlideDown>
+            </form>
+         </ModalTemplate>
+      </Modal>
    )
 }
 
-export default ModalAddCategory;
+export default ModalAddPhoto;

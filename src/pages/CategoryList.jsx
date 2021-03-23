@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setCategories, setCategory, addCategory, removeCategory, setBackgroundImageUrl } from "src/state/gallerySlice.js";
-import { setModal } from "src/state/appSlice.js";
+import { setCategories, setCategory } from "src/state/gallerySlice.js";
 import api, { base } from "src/utils/api/api.js";
 
 import Gallery from "src/components/gallery.jsx";
 import Card from "src/components/card.jsx";
 import LazyImage from "src/components/lazy-image.jsx";
 import { AddIcon } from "src/components/icon.jsx";
+import ModalAddCategory from "src/components/modal/add-category.jsx";
+
+import defaultFolder from "src/images/default-folder.jpg";
 
 const getCountLabel = (count) => {
    if (count == 1)
@@ -21,18 +23,20 @@ const getCountLabel = (count) => {
 function CategoryList() {
    const dispatch = useDispatch();
 
+   const [backgroundImageUrl, setBackgroundImageUrl] = useState("");
+   const [showAddModal, setShowAddModal] = useState(false);
+   const [thumbnailWidth, setThumbnailWidth] = useState(null);
+   const itemWidthRef = useRef();
+
    const categoryIds = useSelector(state => state.gallery.categoryIds);
    const categoryList = useSelector(state => state.gallery.categoryList);
    const categoryListComplete = useSelector(state => state.gallery.categoryListComplete);
-   const backgroundImageUrl = useSelector(state => state.gallery.backgroundImageUrl);
 
    const loadCategories = async () => {
       const loadedCategories = await api.get("/gallery");
 
       switch (loadedCategories.response.status) {
          case 200:
-            if (loadedCategories.json.galleries[0]?.image?.fullpath)
-               dispatch(setBackgroundImageUrl(base + "/images/265x0/" + loadedCategories.json.galleries[0].image.fullpath));
             dispatch(setCategories(loadedCategories.json.galleries));
             break;
 
@@ -64,23 +68,34 @@ function CategoryList() {
    }
 
    useEffect(() => {
+      setThumbnailWidth(Math.ceil(itemWidthRef.current.clientWidth * window.devicePixelRatio));
+   }, [])
+
+   useEffect(() => {
+      if (categoryListComplete && thumbnailWidth) {
+         const firstCategory = Object.values(categoryList)[0];
+         if (firstCategory?.image)
+               setBackgroundImageUrl(`${base}/images/${thumbnailWidth}x0/${firstCategory.image.fullpath}`);
+      }
+   }, [categoryListComplete, thumbnailWidth]);
+
+   useEffect(() => {
       if (!categoryListComplete)
          loadCategories();
-   }, []);
+      else
+         categoryIds.forEach(id => loadCategory(id));
+   }, [categoryListComplete]);
 
    const onCategoryMouseEnter = async (e, id) => {
-      //loading category images (count) on category hover seems more efficient to me than querying all categories on loadup
-      if (!categoryList[id].images)
-         loadCategory(id);
-
       if (categoryList[id]?.image?.fullpath)
-         dispatch(setBackgroundImageUrl(base + "/images/265x0/" + categoryList[id].image.fullpath));
+         setBackgroundImageUrl(`${base}/images/${thumbnailWidth}x0/${categoryList[id].image.fullpath}`);
    }
 
    return (
       <Gallery
          title="Fotogaléria"
          location="Kategórie"
+         backgroundImageUrl={backgroundImageUrl}
       >
          {
             categoryIds.map((id, i) => (
@@ -90,8 +105,8 @@ function CategoryList() {
                   Image={
                      <LazyImage
                         background
-                        placeholder={"/images/default-folder.jpg"}
-                        full={categoryList[id].image?.fullpath && base + "/images/265x0/" + categoryList[id].image.fullpath}
+                        placeholder={defaultFolder}
+                        full={thumbnailWidth && categoryList[id].image?.fullpath && `${base}/images/${thumbnailWidth}x0/${categoryList[id].image.fullpath}`}
                      />
                   }
                   name={categoryList[id].name}
@@ -101,10 +116,15 @@ function CategoryList() {
             ))
          }
          <Card
-            onClick={() => dispatch(setModal("addCategory"))}
+            onClick={() => { setShowAddModal(true) }}
             actionName={"Pridať kategóriu"}
             actionIcon={<AddIcon/>}
          />
+         <div ref={itemWidthRef}></div>
+         {
+            showAddModal &&
+            <ModalAddCategory onClose={() => { setShowAddModal(false) }} onAdded={() => { loadCategories() }}/>
+         }
       </Gallery>
    )
 }

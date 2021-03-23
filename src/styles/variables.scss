@@ -9,17 +9,16 @@ $breakpoints: (
 
 $mappy-queries: (
     mobile: mappy-bp(max-width mobile),
-    tablet: mappy-bp(max-width tablet),
-    laptop: mappy-bp(max-width laptop),
-    uhd: mappy-bp(min-width uhd)
-);
+    min-mobile: mappy-bp(mobile),
 
-/*
-    576px for portrait phones
-    768px for tablets
-    992px for laptops
-    1200px for large devices
-*/
+    tablet: mappy-bp(max-width tablet),
+    min-tablet: mappy-bp(tablet),
+
+    laptop: mappy-bp(max-width laptop),
+    min-laptop: mappy-bp(laptop),
+
+    uhd: mappy-bp(uhd),
+);
 
 $app-font: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 $app-font-size: 87.5%;
@@ -29,6 +28,7 @@ $color-text-dark-normal: #aaaaaa;
 $color-text-dark-faded: #eeeeee;
 
 $color-text-light-strong: #ffffff;
+$color-text-light-tinted: #f9f9f9;
 
 $color-bg-light-strong: #ffffff;
 $color-bg-light-tinted: #f9f9f9;
@@ -63,6 +63,14 @@ $input-accent: #42c78d;
     @include text-style;
     font-size: 1rem;
     text-transform: none;
+}
+
+@mixin input-focus {
+    &:focus-visible {
+        outline: none;
+        border-radius: 0.3em;
+        box-shadow: 0 0 0 1.2rem rgba(3, 102, 214, 0.2);
+    }
 }
 
 $hover-transition-style: 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);

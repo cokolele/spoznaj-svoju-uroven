@@ -3,9 +3,9 @@ import api from "src/utils/api/api.js";
 import "src/styles/components/card.scss";
 
 import { Link } from "react-router-dom";
-import { CSSTransition } from "react-transition-group";
+import SlideDown from "src/components/slide-down.jsx";
 
-function Card({ linkTo, id, name, description, onClick, onMouseEnter, actionName, actionIcon, backgroundUrl, Image }) {
+function Card({ linkTo, id, name, description, onClick, onMouseEnter, actionName, actionIcon, backgroundUrl, Image, href, ref }) {
    const [showDescription, setShowDescription] = useState(false);
 
    const _onMouseEnter = (e) => {
@@ -27,6 +27,8 @@ function Card({ linkTo, id, name, description, onClick, onMouseEnter, actionName
    let ContentWrapper = "div";
    if (linkTo)
       ContentWrapper = Link;
+   if (href)
+      ContentWrapper = "a";
 
    return (
       <div className="card-container">
@@ -36,8 +38,9 @@ function Card({ linkTo, id, name, description, onClick, onMouseEnter, actionName
             onMouseEnter={_onMouseEnter}
             onMouseLeave={_onMouseLeave}
             onClick={_onClick}
+            href={href}
          >
-            <div className={`card ${(actionName || actionIcon) ? "--action" : ""}`}>
+            <div className={`card ${(actionName || actionIcon) ? "--action" : ""}`} ref={ref}>
                {
                   backgroundUrl && <div className="card-image" style={{backgroundImage: `url(${backgroundUrl})`}}></div>
                }
@@ -48,16 +51,12 @@ function Card({ linkTo, id, name, description, onClick, onMouseEnter, actionName
                   (name || description) &&
                   <div className="card-details">
                      <div className="card-name">{name}</div>
-                     <CSSTransition
-                        in={showDescription}
-                        timeout={200}
-                        onEnter={el => el.style.maxHeight = "0px"}
-                        onEntering={el => el.style.maxHeight = el.scrollHeight + "px"}
-                        onExit={el => el.style.maxHeight = el.scrollHeight + "px"}
-                        onExiting={el => el.style.maxHeight = "0px"}
+                     <SlideDown
+                        show={showDescription}
+                        duration={200}
                      >
                         <div className="card-description">{description}</div>
-                     </CSSTransition>
+                     </SlideDown>
                   </div>
                }
                {

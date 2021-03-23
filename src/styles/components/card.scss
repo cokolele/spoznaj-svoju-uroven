@@ -3,28 +3,30 @@
 .card-container {}
 
 .card-wrapper {
-    display: block;
+    @include input-focus;
+
     position: relative;
+    display: block;
     padding-top: 73.74%; //ratio
     margin: 1.07rem;
 
     &:hover {
         .card {
-            top: -10px;
             box-shadow: 0 1px 16px rgba(0, 0, 0, 0.15);
 
-            .card-details {
-                height: 41%;
+            @include mappy-query(min-tablet) {
+                top: -10px;
 
-                @include mappy-query(tablet) {
-                    height: 35%;
+                .card-details {
+                    height: 41%;
                 }
             }
-
-            @include mappy-query(tablet) {
-                top: 0;
-            }
         }
+    }
+
+    @include mappy-query(mobile) {
+        padding-top: 90%;
+        margin: 0 0 1rem 0;
     }
 }
 

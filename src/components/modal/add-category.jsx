@@ -2,18 +2,14 @@ import { useState } from "react";
 import api from "src/utils/api/api.js";
 import "src/styles/components/modal/add-category.scss";
 
+import { Modal, ModalTemplate } from "src/components/modal.jsx";
 import InputRow from "src/components/inputs/row.jsx";
 import InputButton from "src/components/inputs/input-button.jsx";
 import InputText from "src/components/inputs/input-text.jsx";
 import { PlusIcon } from "src/components/icon.jsx";
-import { CSSTransition } from "react-transition-group";
+import SlideDown from "src/components/slide-down.jsx";
 
-import { useDispatch } from "react-redux";
-import { addCategory } from "src/state/gallerySlice.js";
-
-function ModalAddCategory({ close }) {
-   const dispatch = useDispatch();
-
+function ModalAddCategory({ onClose, onAdded }) {
    const [name, setName] = useState("");
    const [error, setError] = useState("");
    const [showError, setShowError] = useState(false);
@@ -55,33 +51,30 @@ function ModalAddCategory({ close }) {
             break;
 
          case 201:
-            dispatch(addCategory({
-               ...addedCategory.json,
-               images: []
-            }))
-            close();
+            onClose();
+            onAdded();
             break;
       }
    }
 
    return (
-      <form className="modal-add-category" onSubmit={onSubmit}>
-         <InputRow>
-            <InputText name="name" placeholder="Zadajte názov kategórie" value={name} onChange={onChange} required />
-            <InputButton value="Pridať" onClick={onSubmit} Icon={<PlusIcon />} />
-         </InputRow>
-         <CSSTransition
-            in={showError}
-            timeout={400}
-            onEnter={el => el.style.maxHeight = "0px"}
-            onEntering={el => el.style.maxHeight = el.scrollHeight + "px"}
-            onExit={el => el.style.maxHeight = el.scrollHeight + "px"}
-            onExiting={el => el.style.maxHeight = "0px"}
-            unmountOnExit
-         >
-            <div className="modal-add-category-error">{error}</div>
-         </CSSTransition>
-      </form>
+      <Modal initialFocus="input" onClose={onClose}>
+         <ModalTemplate title="Pridať kategóriu">
+            <form className="modal-add-category" onSubmit={onSubmit}>
+               <InputRow>
+                  <InputText name="name" placeholder="Zadajte názov kategórie" value={name} onChange={onChange} required />
+                  <InputButton value="Pridať" onClick={onSubmit} Icon={<PlusIcon />} />
+               </InputRow>
+               <SlideDown
+                  show={showError}
+                  duration={400}
+                  unmountOnExit
+               >
+                  <div className="modal-add-category-error">{error}</div>
+               </SlideDown>
+            </form>
+         </ModalTemplate>
+      </Modal>
    )
 }
 

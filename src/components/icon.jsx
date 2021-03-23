@@ -30,10 +30,17 @@ const ArrowLeftIcon = () => (
    </svg>
 )
 
+const ArrowHeadRightIcon = () => (
+   <svg className="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7.38,0.04L4.54,2.85L13.76,12l-9.23,9.15l2.84,2.81L19.46,12L7.38,0.04z"/>
+   </svg>
+)
+
 export {
    AddIcon,
    CloseIcon,
    AddPhotoIcon,
    PlusIcon,
-   ArrowLeftIcon
+   ArrowLeftIcon,
+   ArrowHeadRightIcon
 }

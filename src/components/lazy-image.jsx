@@ -27,6 +27,8 @@ function LazyImage({ placeholder, full, background, className, duration = 300 })
                setBuffer(loadedUrl);
             })
             .catch(e => console.error(full, e));
+      } else {
+         setFrom("");
       }
    }, [full]);
 

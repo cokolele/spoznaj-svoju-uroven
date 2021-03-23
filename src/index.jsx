@@ -13,31 +13,29 @@ import { Provider } from "react-redux";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 //app
-import ModalManager from "src/components/modal.jsx";
+import { ModalProvider } from "src/components/modal.jsx";
 import CategoryList from "src/pages/CategoryList.jsx";
 import ImageList from "src/pages/ImageList.jsx";
 
 render(
    <Provider store={store}>
-      <ModalManager />
-      {/*<SnackBar />*/}
+      <ModalProvider>
+         <BrowserRouter>
+            <Switch>
+               <Route exact path={["/", "/category"]}>
+                  <CategoryList />
+               </Route>
 
-      <BrowserRouter>
-         <Switch>
-            <Route exact path={["/", "/category"]}>
-               <CategoryList />
-            </Route>
+               <Route exact path="/category/:category/:photo?">
+                  <ImageList />
+               </Route>
 
-            <Route exact path="/category/:category">
-               <ImageList />
-            </Route>
-
-            <Route path="*">
-               <div>404</div>
-            </Route>
-         </Switch>
-      </BrowserRouter>
-
+               <Route path="*">
+                  <div>404</div>
+               </Route>
+            </Switch>
+         </BrowserRouter>
+      </ModalProvider>
    </Provider>,
    document.querySelector("#app")
 );

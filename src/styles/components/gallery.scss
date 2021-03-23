@@ -56,10 +56,6 @@
     border-bottom: 2px solid rgba(238, 238, 238, 0.2);
     color: white;
 
-    > * {
-        width: fit-content; //prvy krat to vidim, auto nerobilo nic
-    }
-
     h1 {
         @include text-style-header;
         color: $color-text-light-strong;
@@ -71,10 +67,11 @@
     }
 
     nav {
-        overflow: auto;
+        display: inline-block; //prevent margin collapsing
     }
 
     nav a {
+        @include input-focus;
         display: flex;
         align-items: center;
     }
@@ -100,5 +97,13 @@
         @include mappy-query(tablet) {
             flex-basis: 50%;
         }
+
+        @include mappy-query(mobile) {
+            flex-basis: 45%;
+        }
+    }
+
+    @include mappy-query(mobile) {
+        justify-content: space-evenly;
     }
 }

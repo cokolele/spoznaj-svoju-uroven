@@ -50,11 +50,15 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, "css-loader"],
+                test: /\.(css|scss)$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    "css-loader",
+                    "sass-loader"
+                ],
             },
             {
-                test: /\.png/,
+                test: /\.(png|jpg|jpeg)/,
                 type: "asset/resource"
             },
             {
@@ -69,9 +73,11 @@ module.exports = {
                                 runtime: "automatic"
                             }],
                             ["@babel/preset-env", {
-                                targets: {
-                                    "esmodules": true //tu zmen
-                                },
+                                targets: [
+                                    ">0.2%",
+                                    "not dead",
+                                    "not op_mini all"
+                                ],
                                 bugfixes: true,
                                 useBuiltIns: "usage",
                                 corejs: "3.9",

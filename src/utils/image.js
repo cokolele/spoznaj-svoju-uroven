@@ -1,10 +1,15 @@
-const loadImage = img => new Promise((resolve, reject) => {
+const loadImage = (img, canceler = {}) => new Promise((resolve, reject) => {
     const errorHandler = (e) => {
         reject(e)
     };
 
     if (typeof img == "string") { //url
         const shadowImg = new Image();
+
+        canceler.cancel = () => {
+            shadowImg.src = "";
+            resolve();
+        }
 
         shadowImg.onload = () => resolve(img);
 

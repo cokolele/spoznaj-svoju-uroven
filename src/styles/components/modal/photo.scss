@@ -1,0 +1,56 @@
+@import "src/styles/variables.scss";
+
+.modal-photo {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    align-self: center;
+}
+
+.modal-photo-next, .modal-photo-previous {
+    position: absolute;
+    top: 50%;
+    background-color: transparent;
+    margin: 0;
+    padding: 1rem;
+    right: -4.55rem;
+
+    @include mappy-query(mobile) {
+        right: -3.4rem;
+    }
+
+    fill: rgba($color-text-light-tinted, 0.5);
+
+    transition: fill 0.3s ease;
+
+    svg {
+        width: auto;
+        height: 1.75rem;
+    }
+
+    &:hover, &:focus-visible {
+        fill: $color-text-light-tinted;
+    }
+
+    &:focus-visible {
+        background-color: rgba(255,255,255,0.3);
+        outline: none;
+        border-radius: 4px;
+    }
+}
+
+.modal-photo-previous {
+    transform: rotate(180deg);
+    left: -4.55rem;
+
+    @include mappy-query(mobile) {
+        left: -3.4rem;
+    }
+}
+
+.modal-photo-loader {
+    align-self: center;
+    margin: 4rem 8rem;
+    width: 2rem;
+    height: 2rem;
+}

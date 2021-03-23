@@ -3,10 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 export const gallerySlice = createSlice({
     name: "gallery",
     initialState: {
-        categoryIds: [], //endpoint data dont come with ID, has to be mapped
+        categoryIds: [],
         categoryList: {},
-        categoryListComplete: false,
-        backgroundImageUrl: "/images/default-background.jpg"
+        categoryListComplete: false
     },
     reducers: {
         setCategories: (state, action) => {
@@ -31,19 +30,6 @@ export const gallerySlice = createSlice({
                 };
             }
         },
-        addCategory: (state, action) => {
-            const id = action.payload.path;
-
-            state.categoryIds.push(id);
-            state.categoryList[id] = action.payload;
-        },
-        removeCategory: (state, action) => {
-            state.categories = state.categories.filter((category, i) => i != action.payload);
-        },
-
-        setBackgroundImageUrl: (state, action) => {
-            state.backgroundImageUrl = action.payload;
-        }
     }
 });
 
