@@ -6,7 +6,7 @@ import { Modal, ModalTemplate } from "src/components/modal.jsx";
 import InputDragNDrop from "src/components/inputs/input-dragndrop.jsx";
 import InputButton from "src/components/inputs/input-button.jsx";
 import { PlusIcon } from "src/components/icon.jsx";
-import SlideDown from "src/components/slide-down.jsx";
+import { SlideDown } from "src/components/animation.jsx";
 
 function ModalAddPhoto({ onClose, onAdded, category }) {
    const [files, setFiles] = useState([]);

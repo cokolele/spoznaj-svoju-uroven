@@ -3,7 +3,7 @@ import api from "src/utils/api/api.js";
 import "src/styles/components/card.scss";
 
 import { Link } from "react-router-dom";
-import SlideDown from "src/components/slide-down.jsx";
+import { SlideDown } from "src/components/animation.jsx";
 
 function Card({ linkTo, id, name, description, onClick, onMouseEnter, actionName, actionIcon, backgroundUrl, Image, href, ref }) {
    const [showDescription, setShowDescription] = useState(false);

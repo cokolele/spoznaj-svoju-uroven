@@ -10,15 +10,15 @@
     flex-direction: column;
     margin: 0 auto;
 
-    @include mappy-query(laptop) {
+    @include mappy-query(max-laptop) {
         width: 62.8rem;
     }
 
-    @include mappy-query(tablet) {
+    @include mappy-query(max-tablet) {
         width: 41.8rem;
     }
 
-    @include mappy-query(mobile) {
+    @include mappy-query(max-mobile) {
         width: 100%;
     }
 }
@@ -32,11 +32,11 @@
     overflow: hidden;
     z-index: -1;
 
-    @include mappy-query(mobile) {
+    @include mappy-query(max-mobile) {
         height: 20rem;
     }
 
-    .lazy-image {
+    .gallery-background-image-container {
         position: absolute;
         width: calc(100% + 50px);
         height: calc(100% + 50px);
@@ -44,10 +44,20 @@
         left: -25px;
 
         filter: blur(10px);
-        background-color: #c6d2ea;
-        background-position: center center;
-        background-size: cover;
-        background-repeat: no-repeat;
+        background-color: #d39bbf;
+
+        /*
+        .gallery-background-image-transition {
+            width: 100%;
+            height: 100%;
+
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+
+            transition: background-image 0.3s ease;
+        }
+        */
     }
 }
 
@@ -90,20 +100,20 @@
     > * {
         flex-basis: 25%;
 
-        @include mappy-query(laptop) {
+        @include mappy-query(max-laptop) {
             flex-basis: 33%;
         }
 
-        @include mappy-query(tablet) {
+        @include mappy-query(max-tablet) {
             flex-basis: 50%;
         }
 
-        @include mappy-query(mobile) {
+        @include mappy-query(max-mobile) {
             flex-basis: 45%;
         }
     }
 
-    @include mappy-query(mobile) {
+    @include mappy-query(max-mobile) {
         justify-content: space-evenly;
     }
 }

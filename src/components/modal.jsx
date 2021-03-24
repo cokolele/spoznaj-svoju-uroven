@@ -12,6 +12,7 @@ import getScrollbarWidth from "src/utils/get-scrollbar-width.js";
 
 const ModalContext = createContext();
 
+//providing context with container ref
 function ModalProvider({ children }) {
    const modalContainerRef = useRef();
    const [modalContainer, setModalContainer] = useState();
@@ -28,6 +29,7 @@ function ModalProvider({ children }) {
    );
 }
 
+//using context and creating portal to container ref
 function Modal({ children, onClose, initialFocus }) {
    const modalContainerRef = useContext(ModalContext);
 

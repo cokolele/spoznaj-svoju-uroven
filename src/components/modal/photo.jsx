@@ -7,7 +7,7 @@ import Loader from "src/components/loader.jsx";
 
 import { loadImage } from "src/utils/image.js";
 
-function ModalPhoto({ onClose, image, onNext, onPrevious }) {
+function ModalPhoto({ onClose, image, onNext, onPrevious, hasNext, hasPrevious }) {
    const [src, setSrc] = useState("");
 
    useEffect(() => {
@@ -23,7 +23,8 @@ function ModalPhoto({ onClose, image, onNext, onPrevious }) {
 
       return () => {
          canceled = true;
-         canceler.cancel();
+         if (canceler.cancel)
+            canceler.cancel();
       }
    }, [image]);
 
@@ -42,7 +43,8 @@ function ModalPhoto({ onClose, image, onNext, onPrevious }) {
    }, [image]); //onNext a onPrevious musia byt stale updatnute, neviem preco, inak to nejde
 
    return (
-      <Modal onClose={onClose}>
+      <Modal onClose={onClose} initialFocus=".initFakeFocus">
+         <div tabIndex="-1" className="initFakeFocus"></div>
          {
             src ? (
                <img src={src} className="modal-photo"/>
@@ -52,8 +54,14 @@ function ModalPhoto({ onClose, image, onNext, onPrevious }) {
                </div>
             )
          }
-         <button type="button" className="modal-photo-previous" onClick={onPrevious}><ArrowHeadRightIcon/></button>
-         <button type="button" className="modal-photo-next" onClick={onNext}><ArrowHeadRightIcon/></button>
+         {
+            hasPrevious() &&
+            <button type="button" className="modal-photo-previous" onClick={onPrevious}><ArrowHeadRightIcon/></button>
+         }
+         {
+            hasNext() &&
+            <button type="button" className="modal-photo-next" onClick={onNext}><ArrowHeadRightIcon/></button>
+         }
       </Modal>
    )
 }

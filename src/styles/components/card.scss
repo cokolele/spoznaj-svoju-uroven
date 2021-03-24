@@ -24,7 +24,7 @@
         }
     }
 
-    @include mappy-query(mobile) {
+    @include mappy-query(max-mobile) {
         padding-top: 90%;
         margin: 0 0 1rem 0;
     }
@@ -85,7 +85,7 @@
 
     transition: height $hover-transition-style;
 
-    @include mappy-query(tablet) {
+    @include mappy-query(max-tablet) {
         height: 35%;
     }
 }
@@ -114,7 +114,7 @@
     overflow: hidden;
     transition: max-height $hover-transition-style;
 
-    @include mappy-query(tablet) {
+    @include mappy-query(max-tablet) {
         top: 0.15em;
         max-height: none !important;
     }

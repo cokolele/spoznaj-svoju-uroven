@@ -11,6 +11,7 @@ module.exports = {
     entry: "./src/index.jsx",
     output: {
         path: path.resolve(__dirname, "dist"),
+        publicPath: "/",
         filename: "./[name].[contenthash:8].js",
         assetModuleFilename: "asset.[contenthash:8][ext]",
         clean: true
@@ -54,6 +55,16 @@ module.exports = {
                 use: [
                     MiniCssExtractPlugin.loader,
                     "css-loader",
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            postcssOptions: {
+                                plugins: [
+                                    require("autoprefixer")
+                                ]
+                            }
+                        }
+                    },
                     "sass-loader"
                 ],
             },

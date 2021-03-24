@@ -14,7 +14,7 @@
         flex-grow: 0;
     }
 
-    @include mappy-query(tablet) {
+    @include mappy-query(max-tablet) {
         flex-direction: column;
 
         .--no-grow {

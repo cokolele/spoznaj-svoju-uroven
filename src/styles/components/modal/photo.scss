@@ -15,7 +15,7 @@
     padding: 1rem;
     right: -4.55rem;
 
-    @include mappy-query(mobile) {
+    @include mappy-query(max-mobile) {
         right: -3.4rem;
     }
 
@@ -43,7 +43,7 @@
     transform: rotate(180deg);
     left: -4.55rem;
 
-    @include mappy-query(mobile) {
+    @include mappy-query(max-mobile) {
         left: -3.4rem;
     }
 }

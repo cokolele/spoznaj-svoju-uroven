@@ -7,6 +7,8 @@ const fetchErrorDefault = (e) => {
     };
 }
 
+const base = process.env.NODE_ENV == "production" ? "http://api.programator.sk" : "/api";
+
 const get = async (resource = "/", contentType = "application/json") => {
     try {
         const options = {
@@ -17,7 +19,7 @@ const get = async (resource = "/", contentType = "application/json") => {
             },
         };
 
-        const response = await fetch("/api" + resource, options);
+        const response = await fetch(base + resource, options);
         let json, blob;
 
         if (contentType == "application/json")
@@ -47,7 +49,7 @@ const post = async (resource = "/", body = {}, contentType = "application/json")
             };
         }
 
-        const response = await fetch("/api" + resource, options);
+        const response = await fetch(base + resource, options);
         const json = await response.json();
 
         return { response, json };
@@ -67,7 +69,7 @@ const put = async (resource = "/", body = {}, contentType = "application/json") 
             body: contentType == "application/json" ? JSON.stringify(body) : body
         };
 
-        const response = await fetch("/api" + resource, options);
+        const response = await fetch(base + resource, options);
         const json = await response.json();
 
         return { response, json };
@@ -87,7 +89,7 @@ const patch = async (resource = "/", body = {}, contentType = "application/json"
             body: contentType == "application/json" ? JSON.stringify(body) : body
         };
 
-        const response = await fetch("/api" + resource, options);
+        const response = await fetch(base + resource, options);
         const json = await response.json();
 
         return { response, json };
@@ -103,7 +105,7 @@ const delete_ = async (resource = "/") => {
             credentials: "include"
         };
 
-        const response = await fetch("/api" + resource, options);
+        const response = await fetch(base + resource, options);
         const json = await response.json();
 
         return { response, json };
@@ -119,8 +121,6 @@ export default {
     patch,
     delete: delete_
 };
-
-const base = "http://api.programator.sk";
 
 export {
     base

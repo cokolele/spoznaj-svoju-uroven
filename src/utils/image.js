@@ -9,6 +9,7 @@ const loadImage = (img, canceler = {}) => new Promise((resolve, reject) => {
         canceler.cancel = () => {
             shadowImg.src = "";
             resolve();
+            delete canceler.cancel;
         }
 
         shadowImg.onload = () => resolve(img);

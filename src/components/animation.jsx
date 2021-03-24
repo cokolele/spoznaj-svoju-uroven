@@ -27,4 +27,6 @@ function SlideDown({ children, show, duration, unmountOnExit, mountOnEnter, appe
    )
 }
 
-export default SlideDown;
+export {
+   SlideDown
+};

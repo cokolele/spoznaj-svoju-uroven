@@ -29,7 +29,7 @@
     max-width: 80%;
     height: 80%;
 
-    @include mappy-query(tablet) {
+    @include mappy-query(max-tablet) {
         width: 80%;
     }
 
@@ -72,7 +72,7 @@
 
     overflow: auto;
 
-    @include mappy-query(tablet) {
+    @include mappy-query(max-tablet) {
         max-width: 100%;
         min-width: 100%;
         width: 100%;
@@ -83,7 +83,7 @@
         margin: 0 0 1.2em;
         color: $color-text-dark-strong;
 
-        @include mappy-query(tablet) {
+        @include mappy-query(max-tablet) {
             margin-bottom: 0.7em;
         }
     }

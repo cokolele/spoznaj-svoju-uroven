@@ -128,6 +128,14 @@ function ImageList() {
                   if (category.images[id])
                      history.replace("/category/" + urlCategory + "/" + id);
                }}
+               hasNext={() => {
+                  const id = parseInt(urlPhotoId) + 1;
+                  return !!category.images[id]
+               }}
+               hasPrevious={() => {
+                  const id = parseInt(urlPhotoId) - 1;
+                  return !!category.images[id]
+               }}
             />
          }
       </Gallery>

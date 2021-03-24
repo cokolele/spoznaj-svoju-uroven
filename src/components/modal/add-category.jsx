@@ -7,7 +7,7 @@ import InputRow from "src/components/inputs/row.jsx";
 import InputButton from "src/components/inputs/input-button.jsx";
 import InputText from "src/components/inputs/input-text.jsx";
 import { PlusIcon } from "src/components/icon.jsx";
-import SlideDown from "src/components/slide-down.jsx";
+import { SlideDown } from "src/components/animation.jsx";
 
 function ModalAddCategory({ onClose, onAdded }) {
    const [name, setName] = useState("");

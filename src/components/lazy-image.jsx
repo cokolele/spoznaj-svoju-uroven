@@ -4,41 +4,40 @@ import "src/styles/components/lazy-image.scss";
 import { CSSTransition } from "react-transition-group";
 import { loadImage } from "src/utils/image.js";
 
-function LazyImage({ placeholder, full, background, className, duration = 300 }) {
+//const whitePixel = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWP4////fwAJ+wP9CNHoHgAAAABJRU5ErkJggg==";
+
+function LazyImage({ placeholder, full, background, duration = 300 }) {
    const [from, setFrom] = useState("");
    const [to, setTo] = useState("");
-   const [buffer, setBuffer] = useState("");
+   const [buffer, setBuffer] = useState(placeholder ? placeholder : "");
 
    useEffect(() => {
-      if (placeholder) {
-         loadImage(placeholder)
+      let canceled = false;
+      let canceler = {};
+
+      if (full) {
+         loadImage(full, canceler)
             .then(loadedUrl => {
-               if (!from && !to)
+               if (!canceled)
                   setBuffer(loadedUrl);
             })
-            .catch(e => console.error(placeholder, e));
-      }
-   }, []);
-
-   useEffect(() => {
-      if (full) {
-         loadImage(full)
-            .then(loadedUrl => {
-               setBuffer(loadedUrl);
-            })
             .catch(e => console.error(full, e));
-      } else {
-         setFrom("");
+      }
+
+      return () => {
+         if (canceler.cancel)
+            canceler.cancel();
+         canceled = true;
       }
    }, [full]);
 
    useEffect(() => {
-      if (!to && buffer && buffer != from)
+      if (!to && buffer != from)
          setTo(buffer);
    }, [buffer, to]);
 
    return (
-         <div className={`${className ? className : "lazy-image-container"}`}>
+         <div className="lazy-image-container">
             {
                from && ( background ? (
                   <div style={{backgroundImage: `url(${from})`}} className="lazy-image"></div>
@@ -51,12 +50,13 @@ function LazyImage({ placeholder, full, background, className, duration = 300 })
                in={!!to}
                timeout={{ enter: duration }}
                onEnter={el => el.style.opacity = 0}
-               onEntering={el => {el.style.transition = `opacity ${duration}ms ease`; el.style.opacity = 1;}}
+               onEntering={el => {el.style.transition = `opacity ${duration}ms ease`; el.style.opacity = 0.99;}}
                onEntered={el => {
-                  setFrom(to);
+                  //must re-render incase that the buffer supplies next value immediately then opacity 0 doesnt trigger
                   el.style.display = "none";
                   el.offsetHeight;
                   el.style.display = "block";
+                  setFrom(to);
                   setTo("");
                }}
                mountOnEnter

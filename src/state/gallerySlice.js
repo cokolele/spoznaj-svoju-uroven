@@ -35,10 +35,7 @@ export const gallerySlice = createSlice({
 
 export const {
     setCategories,
-    setCategory,
-    addCategory,
-    removeCategory,
-    setBackgroundImageUrl
+    setCategory
 } = gallerySlice.actions;
 
 export default gallerySlice.reducer;

@@ -1,13 +1,11 @@
 [bugs]
-- gallery bg image flashing
-- [chrome] gallery bg sharp fade edges
-- lazy image placeholder overriding full
+- [chrome] gallery bg sharp fade edges during transition
+    - má to niečo spoločná s opacity transition
+    - možný fix je manuálne setovať gradient opacity v komponente pomocou style propu
 - [chrome] card description bg bleed
 
 [features]
-- uhd responsive
 - admin route (remove category, photo)
 
 [extra features]
 - snackbar
-- photo modal hasNext hasPrev props
