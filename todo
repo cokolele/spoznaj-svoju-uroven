@@ -6,6 +6,9 @@
 - modal window minor differences with design
     - css som sa snažil písať univerzálne a modulárne, príde mi že by som musel robiť výnimky v modal title bottom margine pri každom modal okne z designu aby to sedelo na +-pixely
 
+[critical]
+- názvy kategórií môžu obsahovať len ascii, ak sa nemýlim je to chyba api
+
 [features]
 - admin route (remove category, photo)
 
