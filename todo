@@ -1,8 +1,10 @@
 [bugs]
 - [chrome] gallery bg sharp fade edges during transition
-    - má to niečo spoločná s opacity transition
+    - má to niečo spoločné s opacity transition
     - možný fix je manuálne setovať gradient opacity v komponente pomocou style propu
 - [chrome] card description bg bleed
+- modal window minor differences with design
+    - css som sa snažil písať univerzálne a modulárne, príde mi že by som musel robiť výnimky v modal title bottom margine pri každom modal okne z designu aby to sedelo na +-pixely
 
 [features]
 - admin route (remove category, photo)
