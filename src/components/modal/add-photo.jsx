@@ -41,7 +41,7 @@ function ModalAddPhoto({ onClose, onAdded, category }) {
             errorCheck = true;
             setError("Veľkost fotky " + fileName + " je väčšia ako 30 MB.");
             setShowError(true);
-         } else if (!file.name.match(/\.(jpg|jpeg)$/)) {
+         } else if (!file.name.match(/\.(jpg|jpeg)$/i)) {
             errorCheck = true;
             setError("Fotka " + fileName + " nie je vo formáte JPEG.");
             setShowError(true);
