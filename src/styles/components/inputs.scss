@@ -40,16 +40,6 @@
     }
 }
 
-.input-text {
-    @include text-style-normal;
-    margin: 0;
-
-    padding: 1em 3em 1em 0;
-    border-radius: 0.3em;
-    border: none;
-    outline: none;
-}
-
 .input-button {
     @include input-focus;
     @include text-style-normal;
@@ -100,11 +90,10 @@
 }
 
 .input-dragndrop {
-    position: relative;
+    box-sizing: border-box;
+    width: 100%;
     padding: 2.92rem;
     border: 3px dashed $color-text-dark-faded; //pre presnejsie dodrzanie navrhu by to chcelo border-image, ale toto je podla mna "better practice" v tomto pripade
-    width: 100%;
-    box-sizing: border-box;
     border-radius: 0.3rem;
 
     color: $color-text-dark-normal;
@@ -148,42 +137,27 @@
         }
     }
 
-    &.--preview {
-        .input-dragndrop-asker {
-            visibility: hidden;
-        }
-    }
-
     .input-dragndrop-preview {
-        position: absolute;
-        z-index: 1;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
+        height: 15em;
+        padding-bottom: 1em;
         box-sizing: border-box;
-        padding: 2.92em;
 
-        overflow-y: auto;
         display: flex;
+        overflow-x: auto;
 
         .input-dragndrop-preview-photo {
             position: relative;
             flex-basis: 33%;
             flex-shrink: 0;
-            margin-right: 1em;
+            margin: 1em 0 1em 1em;
             border-radius: 0.3em;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
             overflow: hidden;
-
-            .lazy-image {
-                object-fit: cover;
-                user-select: none;
-            }
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
 
             .input-dragndrop-preview-photo-description {
                 position: absolute;
                 bottom: 0;
+                left: 0;
                 width: 100%;
                 padding: 0.5em;
                 box-sizing: border-box;
@@ -219,11 +193,17 @@
         }
 
         &.--editable {
-            .input-dragndrop-preview-photo:hover {
+            .input-dragndrop-preview-photo {
                 .input-dragndrop-preview-photo-remove {
-                    cursor: pointer;
-                    opacity: 1;
+                    @include input-focus-inset;
                     visibility: visible;
+                }
+
+                &:hover, &:focus-within {
+                    .input-dragndrop-preview-photo-remove {
+                        cursor: pointer;
+                        opacity: 1;
+                    }
                 }
             }
         }

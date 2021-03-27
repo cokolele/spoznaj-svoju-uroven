@@ -5,7 +5,7 @@ import "src/styles/components/card.scss";
 import { Link } from "react-router-dom";
 import { SlideDown } from "src/components/animation.jsx";
 
-function Card({ linkTo, id, name, description, onClick, onMouseEnter, actionName, actionIcon, backgroundUrl, Image, href, ref }) {
+function Card({ id, linkTo, href, Image, name, description, actionName, actionIcon, onClick, onMouseEnter, onMouseLeave }) {
    const [showDescription, setShowDescription] = useState(false);
 
    const _onMouseEnter = (e) => {
@@ -16,6 +16,9 @@ function Card({ linkTo, id, name, description, onClick, onMouseEnter, actionName
    }
 
    const _onMouseLeave = (e) => {
+      if (onMouseLeave)
+         onMouseLeave(e, id);
+
       setShowDescription(false);
    }
 
@@ -24,10 +27,16 @@ function Card({ linkTo, id, name, description, onClick, onMouseEnter, actionName
          onClick(e, id);
    }
 
+   const _onKeyDown = (e) => {
+      if (!href && !linkTo && onClick)
+         if (e.code == "NumpadEnter" || e.code == "Enter")
+            onClick(e, id);
+   }
+
    let ContentWrapper = "div";
    if (linkTo)
       ContentWrapper = Link;
-   if (href)
+   if (href || onClick)
       ContentWrapper = "a";
 
    return (
@@ -37,13 +46,12 @@ function Card({ linkTo, id, name, description, onClick, onMouseEnter, actionName
             to={linkTo}
             onMouseEnter={_onMouseEnter}
             onMouseLeave={_onMouseLeave}
+            onKeyDown={_onKeyDown}
             onClick={_onClick}
             href={href}
+            tabIndex={(!href && !linkTo) && onClick && "0"}
          >
-            <div className={`card ${(actionName || actionIcon) ? "--action" : ""}`} ref={ref}>
-               {
-                  backgroundUrl && <div className="card-image" style={{backgroundImage: `url(${backgroundUrl})`}}></div>
-               }
+            <div className={`card ${(actionName || actionIcon) ? "--action" : ""}`}>
                {
                   Image && <div className="card-image">{Image}</div>
                }

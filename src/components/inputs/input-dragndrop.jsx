@@ -51,45 +51,43 @@ function InputDragNDrop({ onFiles, className, multiple, accept, editable }) {
 
    return (
       <div
-         className={`input-dragndrop ${className ? className : ""} ${dragging ? "--dragging" : ""} ${files.length ? "--preview" : ""}`}
+         className={`input-dragndrop ${dragging ? "--dragging" : ""} ${className ? className : ""}`}
          onDrop={e => onDrop(e)}
          onDragOver={e => onDragOver(e)}
          onDragEnter={e => onDragEnter(e)}
          onDragLeave={e => onDragLeave(e)}
       >
          {
-            files.length != 0 &&
-            <div className={`input-dragndrop-preview ${editable ? "--editable" : ""}`}>
-               {
-                  files.map((file, i) => {
-                     if (file.size != 0) {
-                        return (
-                           <div className="input-dragndrop-preview-photo" key={i}>
-                              <LazyImage placeholder={file.name.match(/\.(png|jpg|jpeg|gif)$/) ? defaultPhoto : defaultFile} full={file}/>
-                              <div className="input-dragndrop-preview-photo-description">{file.name}</div>
-                              <button type="button" className="input-dragndrop-preview-photo-remove" onClick={() => {removeFile(i)}}>Odstrániť</button>
-                           </div>
-                        )
-                     }
-                  })
-               }
-            </div>
+            files.length == 0 ? (
+               <div className="input-dragndrop-asker">
+                  <AddPhotoIcon />
+                  <div className="input-label">
+                     Sem presuňte fotky<br/>
+                     <span>alebo</span>
+                  </div>
+                  <InputFile
+                     name="files"
+                     value="Vyberte súbory"
+                     accept=".jpg,.jpeg"
+                     multiple
+                     onFiles={onFileInputFiles}
+                     grey outline
+                  />
+               </div>
+            ) : (
+               <div className={`input-dragndrop-preview ${editable ? "--editable" : ""}`} tabIndex="-1">
+                  {
+                     files.map((file, i) => file.size != 0 && (
+                        <div className="input-dragndrop-preview-photo" key={i}>
+                           <LazyImage placeholder={file.name.match(/\.(png|jpg|jpeg|gif)$/) ? defaultPhoto : defaultFile} full={file}/>
+                           <div className="input-dragndrop-preview-photo-description">{file.name}</div>
+                           <button type="button" className="input-dragndrop-preview-photo-remove" onClick={() => { removeFile(i) }}>Odstrániť</button>
+                        </div>
+                     ))
+                  }
+               </div>
+            )
          }
-         <div className="input-dragndrop-asker">
-            <AddPhotoIcon />
-            <div className="input-label">
-               Sem presuňte fotky<br/>
-               <span>alebo</span>
-            </div>
-            <InputFile
-               name="files"
-               value="Vyberte súbory"
-               accept=".jpg,.jpeg"
-               multiple
-               onFiles={onFileInputFiles}
-               grey outline
-            />
-         </div>
       </div>
    );
 }

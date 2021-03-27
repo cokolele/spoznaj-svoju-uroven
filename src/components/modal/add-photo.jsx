@@ -91,7 +91,7 @@ function ModalAddPhoto({ onClose, onAdded, category }) {
    }
 
    return (
-      <Modal initialFocus="input" onClose={onClose}>
+      <Modal initialFocus="label" onClose={onClose}>
          <ModalTemplate title="Pridať fotky">
             <form className="modal-add-photo" onSubmit={onSubmit}>
                <InputDragNDrop

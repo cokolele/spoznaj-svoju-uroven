@@ -17,7 +17,7 @@ $mappy-queries: (
     min-laptop: mappy-bp(laptop),
 );
 
-$app-font: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+$app-font: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 $app-font-size: 87.5%;
 
 $color-text-dark-strong: #555555;
@@ -67,6 +67,14 @@ $input-accent: #42c78d;
         outline: none;
         border-radius: 0.3em;
         box-shadow: 0 0 0 1.2rem rgba(3, 102, 214, 0.2);
+    }
+}
+
+@mixin input-focus-inset {
+    &:focus-visible {
+        outline: none;
+        border-radius: 0.3em;
+        box-shadow: inset 0 0 0 1.2rem rgba(3, 102, 214, 0.2);
     }
 }
 
