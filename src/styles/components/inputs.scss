@@ -40,6 +40,16 @@
     }
 }
 
+.input-text {
+    @include text-style-normal;
+    margin: 0;
+
+    padding: 1em 3em 1em 0;
+    border-radius: 0.3em;
+    border: none;
+    outline: none;
+}
+
 .input-button {
     @include input-focus;
     @include text-style-normal;
