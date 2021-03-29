@@ -13,7 +13,6 @@ const get = async (resource = "/", contentType = "application/json") => {
     try {
         const options = {
             method: "GET",
-            credentials: "include",
             headers: {
                 Accept: contentType
             },
@@ -37,7 +36,6 @@ const post = async (resource = "/", body = {}, contentType = "application/json")
     try {
         const options = {
             method: "POST",
-            credentials: "include",
             headers: {},
             body: contentType == "application/json" ? JSON.stringify(body) : body
         };
@@ -62,7 +60,6 @@ const put = async (resource = "/", body = {}, contentType = "application/json") 
     try {
         const options = {
             method: "PUT",
-            credentials: "include",
             headers: {
                 "Content-Type": contentType
             },
@@ -82,7 +79,6 @@ const patch = async (resource = "/", body = {}, contentType = "application/json"
     try {
         const options = {
             method: "PATCH",
-            credentials: "include",
             headers: {
                 "Content-Type": contentType
             },
